@@ -1,0 +1,18 @@
+[Actions]
+requiredWinstVersion >= "4.12.0.0"
+DefVar $ExitCode$
+{{ pre_uninstall_opsi_script }}
+Winbatch_uninstall /SysNative
+Set $ExitCode$ = getLastExitCode
+if ($ExitCode$ = "3010") or ($ExitCode$ = "1641")
+  Comment "Uninstaller requests reboot"
+else
+  if not ($ExitCode$ = "0")
+    LogError "Uninstall failed, exit code: " + $ExitCode$
+    isFatalError "Vendor uninstall failed"
+  endif
+endif
+{{ post_uninstall_opsi_script }}
+
+[Winbatch_uninstall]
+"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "%ScriptPath%\uninstall.ps1"

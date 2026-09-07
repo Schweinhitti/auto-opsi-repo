@@ -1,0 +1,10 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+repository/*
+state/*
+work/*
+!repository/.gitkeep
+!state/.gitkeep
+!work/.gitkeep

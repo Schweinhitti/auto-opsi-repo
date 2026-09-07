@@ -1,0 +1,17 @@
+[Package]
+version = {{ revision | tojson }}
+depends = []
+
+[Product]
+type = "localboot"
+id = {{ p.opsi_product_id | tojson }}
+name = {{ p.name | tojson }}
+description = {{ p.description | tojson }}
+advice = "Internal repository: administrator must verify redistribution rights."
+version = {{ version | tojson }}
+priority = 0
+licenseRequired = false
+productClasses = []
+setupScript = "setup.opsiscript"
+uninstallScript = "uninstall.opsiscript"
+updateScript = "setup.opsiscript"

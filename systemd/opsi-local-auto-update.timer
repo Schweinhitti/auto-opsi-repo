@@ -1,0 +1,11 @@
+[Unit]
+Description=Import private OPSI repository updates every six hours
+
+[Timer]
+OnCalendar=*-*-* 00,06,12,18:30:00
+RandomizedDelaySec=15m
+Persistent=true
+Unit=opsi-local-auto-update.service
+
+[Install]
+WantedBy=timers.target

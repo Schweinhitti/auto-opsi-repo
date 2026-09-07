@@ -1,0 +1,11 @@
+[Unit]
+Description=Import updated packages from private automatic OPSI repository
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/opsi/opsi-docker/opsi-server
+ExecStart=/usr/bin/docker compose exec -T opsi-server opsi-package-updater -v --repo local_auto install
+TimeoutStartSec=2h

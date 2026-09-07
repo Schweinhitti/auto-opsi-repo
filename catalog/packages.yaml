@@ -1,0 +1,659 @@
+packages:
+- id: firefox
+  opsi_product_id: auto-firefox
+  name: Mozilla Firefox
+  description: Mozilla Firefox for Windows x64
+  enabled: true
+  source:
+    type: mozilla
+    product: firefox
+    channel: release
+    version_url: https://product-details.mozilla.org/1.0/firefox_versions.json
+    version_field: LATEST_FIREFOX_VERSION
+    download_url_template: https://archive.mozilla.org/pub/firefox/releases/{version}/win64/en-US/Firefox%20Setup%20{version}.exe
+    allowed_hosts:
+    - product-details.mozilla.org
+    - archive.mozilla.org
+    checksum_url_template: https://archive.mozilla.org/pub/firefox/releases/{version}/SHA256SUMS
+    checksum_filename_template: win64/en-US/Firefox Setup {version}.exe
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args:
+    - -ms
+  detection:
+    method: registry
+    display_name_regex: ^Mozilla Firefox
+  uninstall:
+    method: registry
+    silent_args:
+    - /S
+  redistribution: internal_only
+  package_revision: 1
+- id: thunderbird
+  opsi_product_id: auto-thunderbird
+  name: Mozilla Thunderbird
+  description: Mozilla Thunderbird for Windows x64
+  enabled: true
+  source:
+    type: mozilla
+    product: thunderbird
+    channel: release
+    version_url: https://product-details.mozilla.org/1.0/thunderbird_versions.json
+    version_field: LATEST_THUNDERBIRD_VERSION
+    download_url_template: https://archive.mozilla.org/pub/thunderbird/releases/{version}/win64/en-US/Thunderbird%20Setup%20{version}.exe
+    allowed_hosts:
+    - product-details.mozilla.org
+    - archive.mozilla.org
+    checksum_url_template: https://archive.mozilla.org/pub/thunderbird/releases/{version}/SHA256SUMS
+    checksum_filename_template: win64/en-US/Thunderbird Setup {version}.exe
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args:
+    - -ms
+  detection:
+    method: registry
+    display_name_regex: ^Mozilla Thunderbird
+  uninstall:
+    method: registry
+    silent_args:
+    - /S
+  redistribution: internal_only
+  package_revision: 1
+- id: chrome
+  opsi_product_id: auto-chrome
+  name: Google Chrome
+  description: Google Chrome for Windows x64
+  enabled: true
+  source:
+    type: winget_manifest
+    package_identifier: Google.Chrome
+    allowed_hosts:
+    - dl.google.com
+    installer_types:
+    - wix
+    - msi
+  architecture:
+  - x64
+  installer:
+    type: msi
+    silent_args: &id001
+    - /qn
+    - /norestart
+  detection:
+    method: registry
+    display_name_regex: ^Google Chrome$
+  uninstall:
+    method: registry
+    silent_args: *id001
+  redistribution: internal_only
+  package_revision: 1
+- id: 7zip
+  opsi_product_id: auto-7zip
+  name: 7-Zip
+  description: 7-Zip for Windows x64
+  enabled: true
+  source:
+    type: winget_manifest
+    package_identifier: 7zip.7zip
+    allowed_hosts:
+    - 7-zip.org
+    - www.7-zip.org
+    - github.com
+    - release-assets.githubusercontent.com
+    installer_types:
+    - exe
+    allowed_url_prefixes:
+    - https://github.com/ip7z/7zip/releases/download/
+    - https://release-assets.githubusercontent.com/
+    - https://www.7-zip.org/
+    - https://7-zip.org/
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args:
+    - /S
+  detection:
+    method: registry
+    display_name_regex: ^7-Zip .*\(x64\)
+  uninstall:
+    method: registry
+    silent_args:
+    - /S
+  redistribution: internal_only
+  package_revision: 1
+- id: vlc
+  opsi_product_id: auto-vlc
+  name: VLC
+  description: VLC for Windows x64
+  enabled: false
+  source:
+    type: videolan
+    version_url: https://download.videolan.org/pub/videolan/vlc/
+    version_regex: href="(\d+\.\d+\.\d+)/"
+    download_url_template: https://download.videolan.org/pub/videolan/vlc/{version}/win64/vlc-{version}-win64.exe
+    allowed_hosts:
+    - download.videolan.org
+    checksum_url_template: https://download.videolan.org/pub/videolan/vlc/{version}/win64/vlc-{version}-win64.exe.sha256
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args: &id002
+    - /S
+  detection:
+    method: registry
+    display_name_regex: ^VLC media player
+  uninstall:
+    method: registry
+    silent_args: *id002
+  redistribution: internal_only
+  package_revision: 1
+  disabled_reason: Live official download redirects to externally operated mirrors.
+    Disabled under the vendor-owned-host policy; metadata/installer recipe is retained.
+    Administrator must review official mirror distribution policy before enabling.
+- id: notepadpp
+  opsi_product_id: auto-notepadpp
+  name: Notepad++
+  description: Notepad++ for Windows x64
+  enabled: true
+  source:
+    type: github_release
+    repo: notepad-plus-plus/notepad-plus-plus
+    release_type: latest
+    prerelease: false
+    asset_regex: npp\..*\.Installer\.x64\.exe
+    allowed_hosts:
+    - github.com
+    - release-assets.githubusercontent.com
+    - objects.githubusercontent.com
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args: &id003
+    - /S
+  detection:
+    method: registry
+    display_name_regex: ^Notepad\+\+
+  uninstall:
+    method: registry
+    silent_args: *id003
+  redistribution: internal_only
+  package_revision: 1
+- id: libreoffice
+  opsi_product_id: auto-libreoffice
+  name: LibreOffice
+  description: LibreOffice for Windows x64
+  enabled: false
+  source:
+    type: documentfoundation
+    version_url: https://download.documentfoundation.org/libreoffice/stable/
+    version_regex: href="(\d+\.\d+\.\d+(?:\.\d+)?)/"
+    download_url_template: https://download.documentfoundation.org/libreoffice/stable/{version}/win/x86_64/LibreOffice_{version}_Win_x86-64.msi
+    allowed_hosts:
+    - download.documentfoundation.org
+    checksum_url_template: https://download.documentfoundation.org/libreoffice/stable/{version}/win/x86_64/LibreOffice_{version}_Win_x86-64.msi.sha256
+  architecture:
+  - x64
+  installer:
+    type: msi
+    silent_args: &id004
+    - /qn
+    - /norestart
+  detection:
+    method: registry
+    display_name_regex: ^LibreOffice
+  uninstall:
+    method: registry
+    silent_args: *id004
+  redistribution: internal_only
+  package_revision: 1
+  disabled_reason: Live official download redirects to externally operated mirrors.
+    Disabled under the vendor-owned-host policy; metadata/installer recipe is retained.
+    Administrator must review official mirror distribution policy before enabling.
+- id: keepassxc
+  opsi_product_id: auto-keepassxc
+  name: KeePassXC
+  description: KeePassXC for Windows x64
+  enabled: true
+  source:
+    type: github_release
+    repo: keepassxreboot/keepassxc
+    release_type: latest
+    prerelease: false
+    asset_regex: KeePassXC-.*-Win64\.msi
+    allowed_hosts:
+    - github.com
+    - release-assets.githubusercontent.com
+    - objects.githubusercontent.com
+  architecture:
+  - x64
+  installer:
+    type: msi
+    silent_args: &id005
+    - /qn
+    - /norestart
+  detection:
+    method: registry
+    display_name_regex: ^KeePassXC
+  uninstall:
+    method: registry
+    silent_args: *id005
+  redistribution: internal_only
+  package_revision: 1
+- id: git
+  opsi_product_id: auto-git
+  name: Git for Windows
+  description: Git for Windows for Windows x64
+  enabled: true
+  source:
+    type: github_release
+    repo: git-for-windows/git
+    release_type: latest
+    prerelease: false
+    asset_regex: Git-.*-64-bit\.exe
+    allowed_hosts:
+    - github.com
+    - release-assets.githubusercontent.com
+    - objects.githubusercontent.com
+    version_regex: v(\d+(?:\.\d+)+\.windows\.\d+)
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args:
+    - /VERYSILENT
+    - /NORESTART
+    - /SUPPRESSMSGBOXES
+  detection:
+    method: registry
+    display_name_regex: '^Git(?: version.*)?$'
+    version_replacements:
+      .windows.: .
+  uninstall:
+    method: registry
+    silent_args:
+    - /VERYSILENT
+    - /NORESTART
+  redistribution: internal_only
+  package_revision: 2
+- id: vscode
+  opsi_product_id: auto-vscode
+  name: Visual Studio Code
+  description: Visual Studio Code for Windows x64
+  enabled: true
+  source:
+    type: microsoft
+    api_url: https://update.code.visualstudio.com/api/update/win32-x64/stable/latest
+    allowed_hosts:
+    - update.code.visualstudio.com
+    - vscode.download.prss.microsoft.com
+    - az764295.vo.msecnd.net
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args:
+    - /VERYSILENT
+    - /NORESTART
+    - /MERGETASKS=!runcode
+  detection:
+    method: registry
+    display_name_regex: ^Microsoft Visual Studio Code
+  uninstall:
+    method: registry
+    silent_args:
+    - /VERYSILENT
+    - /NORESTART
+  redistribution: internal_only
+  package_revision: 1
+- id: sumatrapdf
+  opsi_product_id: auto-sumatrapdf
+  name: SumatraPDF
+  description: SumatraPDF for Windows x64
+  enabled: true
+  source:
+    type: winget_manifest
+    package_identifier: SumatraPDF.SumatraPDF
+    allowed_hosts:
+    - www.sumatrapdfreader.org
+    - files2.sumatrapdfreader.org
+    - files.sumatrapdfreader.org
+    installer_types:
+    - exe
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args:
+    - -install
+    - -s
+    - -allusers
+  detection:
+    method: registry
+    display_name_regex: ^SumatraPDF
+  uninstall:
+    method: registry
+    silent_args:
+    - -uninstall
+    - -s
+  redistribution: internal_only
+  package_revision: 1
+- id: putty
+  opsi_product_id: auto-putty
+  name: PuTTY
+  description: PuTTY for Windows x64
+  enabled: true
+  source:
+    type: winget_manifest
+    package_identifier: PuTTY.PuTTY
+    allowed_hosts:
+    - the.earth.li
+    installer_types:
+    - wix
+    - msi
+  architecture:
+  - x64
+  installer:
+    type: msi
+    silent_args: &id006
+    - /qn
+    - /norestart
+    uninstall_previous: true
+  detection:
+    method: registry
+    display_name_regex: ^PuTTY release
+  uninstall:
+    method: registry
+    silent_args: *id006
+  redistribution: internal_only
+  package_revision: 1
+- id: powertoys
+  opsi_product_id: auto-powertoys
+  name: Microsoft PowerToys
+  description: Microsoft PowerToys for Windows x64
+  enabled: true
+  source:
+    type: github_release
+    repo: microsoft/PowerToys
+    release_type: latest
+    prerelease: false
+    asset_regex: PowerToysSetup-.*-x64\.exe
+    allowed_hosts:
+    - github.com
+    - release-assets.githubusercontent.com
+    - objects.githubusercontent.com
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args:
+    - /install
+    - /quiet
+    - /norestart
+  detection:
+    method: registry
+    display_name_regex: ^PowerToys
+  uninstall:
+    method: registry
+    silent_args:
+    - /uninstall
+    - /quiet
+    - /norestart
+  redistribution: internal_only
+  package_revision: 1
+- id: rustdesk
+  opsi_product_id: auto-rustdesk
+  name: RustDesk
+  description: RustDesk for Windows x64
+  enabled: true
+  source:
+    type: github_release
+    repo: rustdesk/rustdesk
+    release_type: latest
+    prerelease: false
+    asset_regex: rustdesk-.*-x86_64\.exe
+    allowed_hosts:
+    - github.com
+    - release-assets.githubusercontent.com
+    - objects.githubusercontent.com
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args:
+    - --silent-install
+  detection:
+    method: registry
+    display_name_regex: ^RustDesk
+  uninstall:
+    method: registry
+    silent_args:
+    - --uninstall
+  redistribution: internal_only
+  package_revision: 1
+- id: gimp
+  opsi_product_id: auto-gimp
+  name: GIMP
+  description: GIMP for Windows x64
+  enabled: false
+  source:
+    type: winget_manifest
+    package_identifier: GIMP.GIMP.3
+    allowed_hosts:
+    - download.gimp.org
+    installer_types:
+    - inno
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args:
+    - /VERYSILENT
+    - /NORESTART
+    - /ALLUSERS
+  detection:
+    method: registry
+    display_name_regex: ^GIMP
+  uninstall:
+    method: registry
+    silent_args:
+    - /VERYSILENT
+    - /NORESTART
+  redistribution: internal_only
+  package_revision: 1
+  disabled_reason: Live official download redirects to externally operated mirrors.
+    Disabled under the vendor-owned-host policy; metadata/installer recipe is retained.
+    Administrator must review official mirror distribution policy before enabling.
+- id: audacity
+  opsi_product_id: auto-audacity
+  name: Audacity
+  description: Audacity for Windows x64
+  enabled: true
+  source:
+    type: github_release
+    repo: audacity/audacity
+    release_type: latest
+    prerelease: false
+    asset_regex: audacity-win-.*-x86_64\.msi
+    allowed_hosts:
+    - github.com
+    - release-assets.githubusercontent.com
+    - objects.githubusercontent.com
+    version_regex: Audacity-(\d+(?:\.\d+)+)
+    checksum_asset_regex: CHECKSUMS.txt
+    checksum_line_regex: ^{filename}\s+\d+\s+([a-fA-F0-9]{64})\s*$
+  architecture:
+  - x64
+  installer:
+    type: msi
+    silent_args:
+    - /qn
+    - /norestart
+  detection:
+    method: registry
+    display_name_regex: ^Audacity
+  uninstall:
+    method: registry
+    silent_args:
+    - /qn
+    - /norestart
+  redistribution: internal_only
+  package_revision: 1
+- id: obs
+  opsi_product_id: auto-obs
+  name: OBS Studio
+  description: OBS Studio for Windows x64
+  enabled: true
+  source:
+    type: github_release
+    repo: obsproject/obs-studio
+    release_type: latest
+    prerelease: false
+    asset_regex: OBS-Studio-.*-Windows-x64-Installer\.exe
+    allowed_hosts:
+    - github.com
+    - release-assets.githubusercontent.com
+    - objects.githubusercontent.com
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args: &id007
+    - /S
+  detection:
+    method: registry
+    display_name_regex: ^OBS Studio
+  uninstall:
+    method: registry
+    silent_args: *id007
+  redistribution: internal_only
+  package_revision: 1
+- id: python
+  opsi_product_id: auto-python
+  name: Python 3.14
+  description: Python 3.14 for Windows x64
+  enabled: true
+  source:
+    type: winget_manifest
+    package_identifier: Python.Python.3.14
+    allowed_hosts:
+    - www.python.org
+    installer_types:
+    - burn
+    - exe
+    track: '3.14'
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args:
+    - /quiet
+    - InstallAllUsers=1
+    - PrependPath=1
+    - Include_test=0
+  detection:
+    method: registry
+    display_name_regex: ^Python 3\.14\.\d+ \(64-bit\)$
+    version_from_display_name_regex: ^Python (\d+\.\d+\.\d+)
+  uninstall:
+    method: registry
+    silent_args:
+    - /uninstall
+    - /quiet
+  redistribution: internal_only
+  package_revision: 2
+- id: temurin
+  opsi_product_id: auto-temurin
+  name: Eclipse Temurin JDK 21
+  description: Eclipse Temurin JDK 21 for Windows x64
+  enabled: true
+  source:
+    type: adoptium
+    java_version: 21
+    api_url: https://api.adoptium.net/v3/assets/latest/{java_version}/hotspot?architecture=x64&image_type=jdk&os=windows&vendor=eclipse
+    version_field: 0.version.semver
+    url_field: 0.binary.installer.link
+    sha256_field: 0.binary.installer.checksum
+    allowed_hosts:
+    - api.adoptium.net
+    - github.com
+    - release-assets.githubusercontent.com
+    - objects.githubusercontent.com
+    detection_version_field: 0.version.openjdk_version
+  architecture:
+  - x64
+  installer:
+    type: msi
+    silent_args: &id008
+    - /qn
+    - /norestart
+  detection:
+    method: registry
+    display_name_regex: ^Eclipse Temurin JDK with Hotspot 21
+    version_regex: ^(\d+(?:\.\d+)+)
+  uninstall:
+    method: registry
+    silent_args: *id008
+  redistribution: internal_only
+  package_revision: 2
+- id: everything
+  opsi_product_id: auto-everything
+  name: Everything Search
+  description: Everything Search for Windows x64
+  enabled: true
+  source:
+    type: winget_manifest
+    package_identifier: voidtools.Everything
+    allowed_hosts:
+    - www.voidtools.com
+    - voidtools.com
+    installer_types:
+    - nullsoft
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args: &id009
+    - /S
+  detection:
+    method: registry
+    display_name_regex: ^Everything
+  uninstall:
+    method: registry
+    silent_args: *id009
+  redistribution: internal_only
+  package_revision: 1
+- id: filezilla
+  opsi_product_id: auto-filezilla
+  name: FileZilla
+  enabled: false
+  disabled_reason: Official automation/redistribution terms and unattended installer
+    need administrator review; no third-party mirrors used.
+  redistribution: unknown
+- id: inkscape
+  opsi_product_id: auto-inkscape
+  name: Inkscape
+  enabled: false
+  disabled_reason: Official download redirects and current unattended installer have
+    not been verified; configure an allowlisted official source before enabling.
+  redistribution: unknown
+- id: winscp
+  opsi_product_id: auto-winscp
+  name: WinSCP
+  enabled: false
+  disabled_reason: Official automated download endpoint and redirects require review;
+    no SourceForge mirror fallback enabled.
+  redistribution: unknown
+- id: pdf24
+  opsi_product_id: auto-pdf24
+  name: PDF24 Creator
+  enabled: false
+  disabled_reason: Redistribution and automated download permission not established;
+    administrator must verify vendor terms before enabling.
+  redistribution: unknown

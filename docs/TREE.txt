@@ -1,0 +1,159 @@
+/opt/opsi/opsi-auto-repo/
+├── builder/
+│   ├── builder/
+│   │   ├── sources/
+│   │   │   ├── __init__.py
+│   │   │   ├── adapters.py
+│   │   │   └── base.py
+│   │   ├── __init__.py
+│   │   ├── catalog.py
+│   │   ├── download.py
+│   │   ├── main.py
+│   │   ├── models.py
+│   │   ├── opsi.py
+│   │   ├── repackage.py
+│   │   ├── repository.py
+│   │   ├── state.py
+│   │   └── versions.py
+│   ├── templates/
+│   │   ├── control.toml.j2
+│   │   ├── install.ps1
+│   │   ├── runtime.ps1
+│   │   ├── setup.opsiscript.j2
+│   │   ├── uninstall.opsiscript.j2
+│   │   └── uninstall.ps1
+│   ├── Dockerfile
+│   ├── entrypoint.sh
+│   └── requirements.txt
+├── catalog/
+│   ├── overrides/
+│   └── packages.yaml
+├── docs/
+│   ├── INTEGRATION.md
+│   ├── SOURCES.md
+│   ├── TREE.txt
+│   └── VALIDATION.md
+├── nginx/
+│   └── default.conf
+├── repository/
+│   ├── .gitkeep
+│   ├── auto-7zip_26.2-1.opsi
+│   ├── auto-7zip_26.2-1.opsi.md5
+│   ├── auto-7zip_26.2-1.opsi.provenance.json
+│   ├── auto-7zip_26.2-1.opsi.zsync
+│   ├── auto-audacity_4.0.0-1.opsi
+│   ├── auto-audacity_4.0.0-1.opsi.md5
+│   ├── auto-audacity_4.0.0-1.opsi.provenance.json
+│   ├── auto-audacity_4.0.0-1.opsi.zsync
+│   ├── auto-chrome_152.0.7977.83-1.opsi
+│   ├── auto-chrome_152.0.7977.83-1.opsi.md5
+│   ├── auto-chrome_152.0.7977.83-1.opsi.provenance.json
+│   ├── auto-chrome_152.0.7977.83-1.opsi.zsync
+│   ├── auto-everything_1.4.1.1032-1.opsi
+│   ├── auto-everything_1.4.1.1032-1.opsi.md5
+│   ├── auto-everything_1.4.1.1032-1.opsi.provenance.json
+│   ├── auto-everything_1.4.1.1032-1.opsi.zsync
+│   ├── auto-firefox_155.0.1-1.opsi
+│   ├── auto-firefox_155.0.1-1.opsi.md5
+│   ├── auto-firefox_155.0.1-1.opsi.provenance.json
+│   ├── auto-firefox_155.0.1-1.opsi.zsync
+│   ├── auto-git_2.55.0.windows.5-1.opsi
+│   ├── auto-git_2.55.0.windows.5-1.opsi.md5
+│   ├── auto-git_2.55.0.windows.5-1.opsi.provenance.json
+│   ├── auto-git_2.55.0.windows.5-1.opsi.zsync
+│   ├── auto-git_2.55.0.windows.5-2.opsi
+│   ├── auto-git_2.55.0.windows.5-2.opsi.md5
+│   ├── auto-git_2.55.0.windows.5-2.opsi.provenance.json
+│   ├── auto-git_2.55.0.windows.5-2.opsi.zsync
+│   ├── auto-keepassxc_2.7.12-1.opsi
+│   ├── auto-keepassxc_2.7.12-1.opsi.md5
+│   ├── auto-keepassxc_2.7.12-1.opsi.provenance.json
+│   ├── auto-keepassxc_2.7.12-1.opsi.zsync
+│   ├── auto-notepadpp_8.9.8-1.opsi
+│   ├── auto-notepadpp_8.9.8-1.opsi.md5
+│   ├── auto-notepadpp_8.9.8-1.opsi.provenance.json
+│   ├── auto-notepadpp_8.9.8-1.opsi.zsync
+│   ├── auto-obs_32.2.2-1.opsi
+│   ├── auto-obs_32.2.2-1.opsi.md5
+│   ├── auto-obs_32.2.2-1.opsi.provenance.json
+│   ├── auto-obs_32.2.2-1.opsi.zsync
+│   ├── auto-powertoys_0.101.2362.0-1.opsi
+│   ├── auto-powertoys_0.101.2362.0-1.opsi.md5
+│   ├── auto-powertoys_0.101.2362.0-1.opsi.provenance.json
+│   ├── auto-powertoys_0.101.2362.0-1.opsi.zsync
+│   ├── auto-putty_0.84.0.0-1.opsi
+│   ├── auto-putty_0.84.0.0-1.opsi.md5
+│   ├── auto-putty_0.84.0.0-1.opsi.provenance.json
+│   ├── auto-putty_0.84.0.0-1.opsi.zsync
+│   ├── auto-python_3.14.7-1.opsi
+│   ├── auto-python_3.14.7-1.opsi.md5
+│   ├── auto-python_3.14.7-1.opsi.provenance.json
+│   ├── auto-python_3.14.7-1.opsi.zsync
+│   ├── auto-python_3.14.7-2.opsi
+│   ├── auto-python_3.14.7-2.opsi.md5
+│   ├── auto-python_3.14.7-2.opsi.provenance.json
+│   ├── auto-python_3.14.7-2.opsi.zsync
+│   ├── auto-rustdesk_1.4.9-1.opsi
+│   ├── auto-rustdesk_1.4.9-1.opsi.md5
+│   ├── auto-rustdesk_1.4.9-1.opsi.provenance.json
+│   ├── auto-rustdesk_1.4.9-1.opsi.zsync
+│   ├── auto-sumatrapdf_3.6.1-1.opsi
+│   ├── auto-sumatrapdf_3.6.1-1.opsi.md5
+│   ├── auto-sumatrapdf_3.6.1-1.opsi.provenance.json
+│   ├── auto-sumatrapdf_3.6.1-1.opsi.zsync
+│   ├── auto-temurin_21.0.12.local.101.0.lts-1.opsi
+│   ├── auto-temurin_21.0.12.local.101.0.lts-1.opsi.md5
+│   ├── auto-temurin_21.0.12.local.101.0.lts-1.opsi.provenance.json
+│   ├── auto-temurin_21.0.12.local.101.0.lts-1.opsi.zsync
+│   ├── auto-temurin_21.0.12.local.101.0.lts-2.opsi
+│   ├── auto-temurin_21.0.12.local.101.0.lts-2.opsi.md5
+│   ├── auto-temurin_21.0.12.local.101.0.lts-2.opsi.provenance.json
+│   ├── auto-temurin_21.0.12.local.101.0.lts-2.opsi.zsync
+│   ├── auto-thunderbird_155.0-1.opsi
+│   ├── auto-thunderbird_155.0-1.opsi.md5
+│   ├── auto-thunderbird_155.0-1.opsi.provenance.json
+│   ├── auto-thunderbird_155.0-1.opsi.zsync
+│   ├── auto-vscode_1.136.1-1.opsi
+│   ├── auto-vscode_1.136.1-1.opsi.md5
+│   ├── auto-vscode_1.136.1-1.opsi.provenance.json
+│   ├── auto-vscode_1.136.1-1.opsi.zsync
+│   ├── packages.json
+│   └── packages.msgpack.zstd
+├── scripts/
+│   ├── audit-repository.py
+│   └── render-example.py
+├── state/
+│   ├── .gitkeep
+│   ├── builder.lock
+│   ├── last-run.json
+│   └── packages.json
+├── systemd/
+│   ├── opsi-local-auto-update.service
+│   └── opsi-local-auto-update.timer
+├── tests/
+│   ├── conftest.py
+│   ├── test_core.py
+│   └── test_workflow.py
+├── work/
+│   ├── example-source/
+│   │   └── auto-firefox/
+│   │       ├── CLIENT_DATA/
+│   │       │   ├── config.json
+│   │       │   ├── install.ps1
+│   │       │   ├── runtime.ps1
+│   │       │   ├── setup.opsiscript
+│   │       │   ├── uninstall.opsiscript
+│   │       │   └── uninstall.ps1
+│   │       └── OPSI/
+│   │           └── control.toml
+│   └── .gitkeep
+├── .dockerignore
+├── .env
+├── .env.example
+├── .gitignore
+├── README.md
+├── docker-compose.yml
+├── pyproject.toml
+└── pytest.ini
+
+Virtual environments, protected session directories and rebuildable CLI caches omitted.

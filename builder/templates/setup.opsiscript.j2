@@ -1,0 +1,20 @@
+[Actions]
+requiredWinstVersion >= "4.12.0.0"
+DefVar $ExitCode$
+{{ pre_install_opsi_script }}
+{% if custom_detection %}{{ custom_detection }}{% else %}
+Winbatch_install /SysNative
+Set $ExitCode$ = getLastExitCode
+if ($ExitCode$ = "3010") or ($ExitCode$ = "1641")
+  Comment "Installer requests reboot; schedule reboot through OPSI policy"
+else
+  if not ($ExitCode$ = "0")
+    LogError "Installation failed, exit code: " + $ExitCode$
+    isFatalError "Vendor installation failed"
+  endif
+endif
+{% endif %}
+{{ post_install_opsi_script }}
+
+[Winbatch_install]
+"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "%ScriptPath%\install.ps1"
