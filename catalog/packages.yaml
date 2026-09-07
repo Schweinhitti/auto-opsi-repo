@@ -196,6 +196,7 @@ packages:
     allowed_hosts:
     - download.documentfoundation.org
     - ftp.halifax.rwth-aachen.de
+    - rwth-aachen.de
     installer_types:
     - wix
     - msi
