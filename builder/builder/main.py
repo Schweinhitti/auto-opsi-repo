@@ -10,7 +10,7 @@ import threading
 from pathlib import Path
 
 from .catalog import load_catalog
-from .download import HTTP, download, protect_checksum
+from .download import HTTP, UpstreamRateLimitError, download, protect_checksum
 from .opsi import build, generate
 from .repository import inventory, publish, retain
 from .sources import resolve
@@ -169,6 +169,13 @@ def run(args):
                 summary["Updated"].append(
                     pid + ": " + previous.get("upstream_version", "none") + " -> " + release.version
                 )
+        except UpstreamRateLimitError as exc:
+            if exc.host == "api.github.com":
+                LOG.warning("%s skipped", pid)
+                summary["Warnings"].append(pid + ": " + str(exc))
+            else:
+                LOG.exception("%s failed", pid)
+                summary["Failed"].append(pid + ": " + str(exc))
         except Exception as exc:
             LOG.exception("%s failed", pid)
             summary["Failed"].append(pid + ": " + str(exc))

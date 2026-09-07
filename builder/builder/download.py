@@ -32,6 +32,13 @@ def validate_url(url, hosts):
     return url
 
 
+class UpstreamRateLimitError(RuntimeError):
+    def __init__(self, host, reset):
+        self.host = host
+        self.reset = reset
+        super().__init__(f"Upstream access/rate limit; retry next cycle (reset={reset})")
+
+
 class HTTP:
     def __init__(self):
         self.session = requests.Session()
@@ -44,6 +51,7 @@ class HTTP:
         self.session.mount("https://", HTTPAdapter(max_retries=retry))
         self.session.headers["User-Agent"] = "opsi-auto-repo/1.0"
         self.session.verify = os.getenv("REQUESTS_CA_BUNDLE") or True
+        self.rate_limited_until = {}
 
     def get(self, url, hosts, limit=8 * 1024 * 1024):
         chunks = []
@@ -60,8 +68,12 @@ class HTTP:
         start = time.monotonic()
         for _ in range(10):
             validate_url(url, hosts)
+            hostname = (urlparse(url).hostname or "").lower()
+            blocked_until = self.rate_limited_until.get(hostname)
+            if blocked_until and time.time() < blocked_until:
+                raise UpstreamRateLimitError(hostname, str(int(blocked_until)))
             headers = {}
-            if urlparse(url).hostname == "api.github.com" and os.getenv("GITHUB_TOKEN"):
+            if hostname == "api.github.com" and os.getenv("GITHUB_TOKEN"):
                 headers["Authorization"] = "Bearer " + os.environ["GITHUB_TOKEN"]
             response = self.session.get(
                 url,
@@ -76,9 +88,15 @@ class HTTP:
                 continue
             with response:
                 if response.status_code in (403, 429):
-                    raise RuntimeError(
-                        f"Upstream access/rate limit; retry next cycle (reset={response.headers.get('X-RateLimit-Reset', 'unknown')})"
-                    )
+                    reset = response.headers.get("X-RateLimit-Reset", "unknown")
+                    if hostname == "api.github.com":
+                        try:
+                            self.rate_limited_until[hostname] = max(
+                                int(reset), int(self.rate_limited_until.get(hostname, 0))
+                            )
+                        except ValueError:
+                            pass
+                    raise UpstreamRateLimitError(hostname, reset)
                 response.raise_for_status()
                 if int(response.headers.get("Content-Length", 0)) > limit:
                     raise ValueError("Download exceeds size limit")
