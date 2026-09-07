@@ -46,6 +46,10 @@ def load_catalog(path):
             raise ValueError("Invalid installer")
         if not p["source"].get("allowed_hosts"):
             raise ValueError("Explicit official host allowlist required")
+        if "disable_host_validation" in p["source"] and type(
+            p["source"]["disable_host_validation"]
+        ) is not bool:
+            raise ValueError("disable_host_validation must be a boolean")
         if p["detection"]["method"] not in {
             "registry",
             "file_version",

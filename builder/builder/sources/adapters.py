@@ -183,7 +183,7 @@ def resolve(package, http):
         result = Release(version, item["InstallerUrl"], item["InstallerSha256"])
     else:
         raise ValueError("Unsupported source: " + kind)
-    validate_url(result.url, hosts)
+    validate_url(result.url, hosts, s.get("disable_host_validation", False))
     if s.get("allowed_url_prefixes") and not any(
         result.url.startswith(prefix) for prefix in s["allowed_url_prefixes"]
     ):

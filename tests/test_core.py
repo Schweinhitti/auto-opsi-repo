@@ -31,7 +31,7 @@ def test_libreoffice_and_pdf24_enabled_with_latest_sources():
     packages = {p["id"]: p for p in load_catalog(ROOT / "catalog/packages.yaml")}
     assert packages["libreoffice"]["enabled"] is True
     assert packages["libreoffice"]["source"]["type"] == "winget_manifest"
-    assert "ftp.halifax.rwth-aachen.de" in packages["libreoffice"]["source"]["allowed_hosts"]
+    assert packages["libreoffice"]["source"]["disable_host_validation"] is True
     assert packages["pdf24"]["enabled"] is True
     assert packages["pdf24"]["source"]["type"] == "winget_manifest"
 
@@ -73,6 +73,10 @@ def test_url_reject(url):
 
 def test_url_accept():
     assert validate_url("https://vendor.test/a", ["vendor.test"])
+
+
+def test_url_host_validation_can_be_disabled():
+    assert validate_url("https://vendor.test/a", ["other.test"], disable_host_validation=True)
 
 
 def test_checksums():

@@ -13,7 +13,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 
-def validate_url(url, hosts):
+def validate_url(url, hosts, disable_host_validation=False):
     p = urlparse(url)
     if (
         p.scheme != "https"
@@ -23,7 +23,7 @@ def validate_url(url, hosts):
         or p.port not in (None, 443)
     ):
         raise ValueError("Only credential-free HTTPS URLs are accepted")
-    if not any(
+    if not disable_host_validation and not any(
         p.hostname.lower() == h.lower()
         or (h.startswith("*.") and p.hostname.lower().endswith(h[1:].lower()))
         for h in hosts
@@ -53,21 +53,21 @@ class HTTP:
         self.session.verify = os.getenv("REQUESTS_CA_BUNDLE") or True
         self.rate_limited_until = {}
 
-    def get(self, url, hosts, limit=8 * 1024 * 1024):
+    def get(self, url, hosts, limit=8 * 1024 * 1024, disable_host_validation=False):
         chunks = []
-        for chunk in self.stream(url, hosts, limit):
+        for chunk in self.stream(url, hosts, limit, disable_host_validation):
             chunks.append(chunk)
         return b"".join(chunks)
 
-    def json(self, url, hosts):
+    def json(self, url, hosts, disable_host_validation=False):
         import json
 
-        return json.loads(self.get(url, hosts))
+        return json.loads(self.get(url, hosts, disable_host_validation=disable_host_validation))
 
-    def stream(self, url, hosts, limit):
+    def stream(self, url, hosts, limit, disable_host_validation=False):
         start = time.monotonic()
         for _ in range(10):
-            validate_url(url, hosts)
+            validate_url(url, hosts, disable_host_validation=disable_host_validation)
             hostname = (urlparse(url).hostname or "").lower()
             blocked_until = self.rate_limited_until.get(hostname)
             if blocked_until and time.time() < blocked_until:
@@ -154,6 +154,7 @@ def _download_once(http, release, package, destination):
                 release.url,
                 package["source"]["allowed_hosts"],
                 int(os.getenv("MAX_DOWNLOAD_BYTES", str(2 * 1024**3))),
+                package["source"].get("disable_host_validation", False),
             ):
                 f.write(chunk)
                 digest.update(chunk)
