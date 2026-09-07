@@ -7,14 +7,7 @@ The project lives in `/opt/opsi/opsi-auto-repo`. Your existing server at `/opt/o
 ## AI disclaimer and public GitHub readiness
 
 Large parts of this repository were drafted with AI assistance (ChatGPT/Copilot). The plan is to keep reviewing and rewriting parts over time where needed.
-
-Before setting this repository to public, confirm this checklist:
-
-- [x] README includes scope, security notes, and operational limits.
-- [x] CI workflow exists in `.github/workflows/ci.yml`.
-- [x] `.env` is ignored and an `.env.example` template is provided.
-- [ ] Add and confirm your intended open-source license (for example `LICENSE`).
-- [ ] Enable repository-level protections you want for public collaboration (branch protection, required checks, Dependabot/security alerts, and secret scanning).
+This repository is available under the MIT License so anyone can use, modify, and share it (see `LICENSE`).
 
 ## Architecture
 
