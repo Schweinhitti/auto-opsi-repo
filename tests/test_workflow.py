@@ -1,12 +1,13 @@
 import copy
 import json
+import time
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 import yaml
 from builder.catalog import load_catalog
-from builder.download import HTTP, download, safe_extract_zip
+from builder.download import HTTP, UpstreamRateLimitError, download, safe_extract_zip
 from builder.models import Release
 from builder.sources.adapters import resolve, select_github
 from builder.versions import normalize, version_key
@@ -391,6 +392,52 @@ def test_failure_isolation(tmp_path, monkeypatch, capsys):
     assert "everything" in calls
     assert "auto-firefox: vendor unavailable" in capsys.readouterr().out
     assert list(tmp_path.iterdir()) == []
+
+
+def test_github_rate_limit_is_cached(monkeypatch):
+    http = HTTP()
+    calls = []
+    reset = str(int(time.time()) + 3600)
+
+    class Response:
+        is_redirect = False
+        status_code = 429
+        headers = {"X-RateLimit-Reset": reset}
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_):
+            return False
+
+    def get(url, **kwargs):
+        calls.append(url)
+        return Response()
+
+    monkeypatch.setattr(http.session, "get", get)
+    with pytest.raises(UpstreamRateLimitError):
+        http.get("https://api.github.com/repos/vendor/app/releases", ["api.github.com"])
+    with pytest.raises(UpstreamRateLimitError):
+        http.get("https://api.github.com/repos/vendor/app/releases", ["api.github.com"])
+    assert len(calls) == 1
+
+
+def test_github_rate_limit_is_warning(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("REPO_ROOT", str(tmp_path))
+    monkeypatch.setenv("CATALOG_PATH", str(ROOT / "catalog/packages.yaml"))
+    calls = []
+
+    def resolve_mock(p, http):
+        calls.append(p["id"])
+        if p["id"] == "firefox":
+            raise UpstreamRateLimitError("api.github.com", "123")
+        return Release("100.0", "https://vendor.test/a")
+
+    monkeypatch.setattr(main, "resolve", resolve_mock)
+    assert main.run(SimpleNamespace(product=None, force=[], force_all=False, dry_run=True)) == 0
+    out = capsys.readouterr().out
+    assert "auto-firefox: Upstream access/rate limit; retry next cycle (reset=123)" in out
+    assert "everything" in calls
 
 
 def test_zip_symlink(tmp_path):
