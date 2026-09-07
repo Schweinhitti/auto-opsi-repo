@@ -31,6 +31,7 @@ def test_libreoffice_and_pdf24_enabled_with_latest_sources():
     packages = {p["id"]: p for p in load_catalog(ROOT / "catalog/packages.yaml")}
     assert packages["libreoffice"]["enabled"] is True
     assert packages["libreoffice"]["source"]["type"] == "winget_manifest"
+    assert "ftp.halifax.rwth-aachen.de" in packages["libreoffice"]["source"]["allowed_hosts"]
     assert packages["pdf24"]["enabled"] is True
     assert packages["pdf24"]["source"]["type"] == "winget_manifest"
 
