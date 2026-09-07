@@ -243,6 +243,26 @@ def test_metadata_failure_does_not_delete(tmp_path, monkeypatch):
     assert len(list(tmp_path.glob("*.opsi"))) == 3
 
 
+def test_retain_deletes_obsolete_sidecars(tmp_path, monkeypatch):
+    old = tmp_path / "auto-a_1.0-1.opsi"
+    new = tmp_path / "auto-a_2.0-1.opsi"
+    old.touch()
+    new.touch()
+    for suffix in (".md5", ".zsync", ".provenance.json"):
+        Path(str(old) + suffix).write_text("x")
+        Path(str(new) + suffix).write_text("x")
+
+    def metadata(repo, work, excluded=()):
+        assert list(excluded) == [old]
+
+    monkeypatch.setattr(repository, "metadata", metadata)
+    repository.retain(tmp_path, tmp_path, 1)
+    assert not old.exists()
+    for suffix in (".md5", ".zsync", ".provenance.json"):
+        assert not Path(str(old) + suffix).exists()
+        assert Path(str(new) + suffix).exists()
+
+
 def test_metadata_cross_device_fallback(tmp_path, monkeypatch):
     import errno
 

@@ -189,15 +189,15 @@ packages:
   opsi_product_id: auto-libreoffice
   name: LibreOffice
   description: LibreOffice for Windows x64
-  enabled: false
+  enabled: true
   source:
-    type: documentfoundation
-    version_url: https://download.documentfoundation.org/libreoffice/stable/
-    version_regex: href="(\d+\.\d+\.\d+(?:\.\d+)?)/"
-    download_url_template: https://download.documentfoundation.org/libreoffice/stable/{version}/win/x86_64/LibreOffice_{version}_Win_x86-64.msi
+    type: winget_manifest
+    package_identifier: TheDocumentFoundation.LibreOffice
     allowed_hosts:
     - download.documentfoundation.org
-    checksum_url_template: https://download.documentfoundation.org/libreoffice/stable/{version}/win/x86_64/LibreOffice_{version}_Win_x86-64.msi.sha256
+    installer_types:
+    - wix
+    - msi
   architecture:
   - x64
   installer:
@@ -213,9 +213,6 @@ packages:
     silent_args: *id004
   redistribution: internal_only
   package_revision: 1
-  disabled_reason: Live official download redirects to externally operated mirrors.
-    Disabled under the vendor-owned-host policy; metadata/installer recipe is retained.
-    Administrator must review official mirror distribution policy before enabling.
 - id: keepassxc
   opsi_product_id: auto-keepassxc
   name: KeePassXC
@@ -653,7 +650,30 @@ packages:
 - id: pdf24
   opsi_product_id: auto-pdf24
   name: PDF24 Creator
-  enabled: false
-  disabled_reason: Redistribution and automated download permission not established;
-    administrator must verify vendor terms before enabling.
+  description: PDF24 Creator for Windows x64
+  enabled: true
+  source:
+    type: winget_manifest
+    package_identifier: geeksoftwareGmbH.PDF24Creator
+    allowed_hosts:
+    - '*.pdf24.org'
+    installer_types:
+    - inno
+    - exe
+  architecture:
+  - x64
+  installer:
+    type: exe
+    silent_args:
+    - /VERYSILENT
+    - /NORESTART
+  detection:
+    method: registry
+    display_name_regex: ^PDF24
+  uninstall:
+    method: registry
+    silent_args:
+    - /VERYSILENT
+    - /NORESTART
   redistribution: unknown
+  package_revision: 1
