@@ -4,6 +4,11 @@ This self-hosted Docker stack discovers upstream Windows releases, downloads off
 
 The project lives in `/opt/opsi/opsi-auto-repo`. Your existing server at `/opt/opsi/opsi-docker/opsi-server` is separate. Nothing here imports products, changes server configuration, or schedules client deployments without the administrator running the documented integration commands.
 
+## AI disclaimer and public GitHub readiness
+
+Large parts of this repository were drafted with AI assistance (ChatGPT/Copilot). The plan is to keep reviewing and rewriting parts over time where needed.
+This repository is available under the MIT License so anyone can use, modify, and share it (see `LICENSE`).
+
 ## Architecture
 
 - **repo-builder**: Python, official OPSI 4.3 package CLI, immediate startup run followed by a configurable six-hour interval. One product failing does not stop other products. Persistent state and historical installer checksums live in `state/packages.json`.
