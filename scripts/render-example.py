@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: E402
 """Render inspectable OPSI sources without downloading an installer."""
 import sys
 from pathlib import Path

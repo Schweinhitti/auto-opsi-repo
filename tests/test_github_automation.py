@@ -19,8 +19,8 @@ def test_ci_workflow_exists_and_has_core_steps():
     uses = [step.get("uses") for step in steps if "uses" in step]
     runs = [step.get("run", "") for step in steps]
 
-    assert "actions/checkout@v4" in uses
-    assert "actions/setup-python@v5" in uses
+    assert "actions/checkout@v7" in uses
+    assert "actions/setup-python@v7" in uses
     assert any("ruff check ." in cmd for cmd in runs)
     assert any("pytest -q" in cmd for cmd in runs)
 
