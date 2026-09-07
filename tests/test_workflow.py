@@ -33,6 +33,7 @@ def test_normalization_roundtrip(version):
         lambda p: p.update(architecture=["arm64"]),
         lambda p: p.update(package_revision=0),
         lambda p: p["source"].update(type="bogus"),
+        lambda p: p["source"].update(disable_host_validation="yes"),
         lambda p: p.update(opsi_product_id="../bad"),
         lambda p: p["installer"].update(type="script"),
         lambda p: p["source"].update(allowed_hosts=[]),
@@ -175,6 +176,37 @@ def test_winget_selection(host):
             resolve(p, Mock())
     else:
         assert resolve(p, Mock()).version == "1.10"
+
+
+def test_winget_selection_with_disabled_host_validation():
+    p = package()
+    p["source"] = {
+        "type": "winget_manifest",
+        "package_identifier": "Vendor.App",
+        "allowed_hosts": ["vendor.test"],
+        "disable_host_validation": True,
+    }
+
+    class Mock:
+        def json(self, *args):
+            return [{"type": "dir", "name": "1.10"}]
+
+        def get(self, *args):
+            return yaml.safe_dump(
+                {
+                    "Installers": [
+                        {
+                            "Architecture": "x64",
+                            "InstallerType": "exe",
+                            "Scope": "machine",
+                            "InstallerUrl": "https://mirror.test/a",
+                            "InstallerSha256": "a" * 64,
+                        }
+                    ]
+                }
+            ).encode()
+
+    assert resolve(p, Mock()).url == "https://mirror.test/a"
 
 
 def test_html_download_rejected(tmp_path):

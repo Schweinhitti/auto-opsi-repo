@@ -128,6 +128,7 @@ uninstall:
 ```
 
 Run unit tests and a product dry run, inspect generated sources, then perform a real build and Windows acceptance test. URL allowlists check every redirect; a vendor moving to a new CDN will deliberately fail until its official status is reviewed. Avoid broad wildcards. For shared hosts such as GitHub, add `allowed_url_prefixes` to a WinGet recipe to bind initial installer URLs to the verified project.
+If a vendor intentionally rotates across many official mirrors and no stable host allowlist is practical, set `source.disable_host_validation: true` for that package to keep HTTPS/scheme checks but skip hostname pinning.
 
 ### Source adapters
 

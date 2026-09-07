@@ -193,10 +193,9 @@ packages:
   source:
     type: winget_manifest
     package_identifier: TheDocumentFoundation.LibreOffice
+    disable_host_validation: true
     allowed_hosts:
     - download.documentfoundation.org
-    - ftp.halifax.rwth-aachen.de
-    - rwth-aachen.de
     installer_types:
     - wix
     - msi
