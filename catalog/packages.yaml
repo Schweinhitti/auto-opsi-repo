@@ -195,6 +195,7 @@ packages:
     package_identifier: TheDocumentFoundation.LibreOffice
     allowed_hosts:
     - download.documentfoundation.org
+    - ftp.halifax.rwth-aachen.de
     installer_types:
     - wix
     - msi
