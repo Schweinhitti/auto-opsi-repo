@@ -1,8 +1,8 @@
 # Automatic private OPSI 4.3 software repository
 
-This self-hosted Docker stack discovers upstream Windows releases, downloads official installers, packages those installers into real `.opsi` archives, generates OPSI repository metadata, and serves the results at **http://HOST-IP:37563/**. Clients install the bundled vendor installer; they do not need WinGet or Internet access for installer retrieval.
+This self-hosted Docker stack discovers upstream Windows releases, downloads official installers, packages those installers into real `.opsi` archives, generates OPSI repository metadata, and serves the results over HTTP. Clients install the bundled vendor installer; they do not need WinGet or Internet access for installer retrieval.
 
-The project lives in `/opt/opsi/opsi-auto-repo`. Your existing server at `/opt/opsi/opsi-docker/opsi-server` is separate. Nothing here imports products, changes server configuration, or schedules client deployments without the administrator running the documented integration commands.
+The project is designed to run alongside an existing OPSI server. It does not import products, change server configuration, or schedule client deployments without the administrator running the documented integration commands.
 
 ## AI disclaimer and public GitHub readiness
 
@@ -12,7 +12,7 @@ This repository is available under the MIT License so anyone can use, modify, an
 ## Architecture
 
 - **repo-builder**: Python, official OPSI 4.3 package CLI, immediate startup run followed by a configurable six-hour interval. One product failing does not stop other products. Persistent state and historical installer checksums live in `state/packages.json`.
-- **repo-web**: nginx, read-only repository mount, directory listing, GET/HEAD only, HTTP healthcheck, port 37563 on this host. No Docker socket or builder work/state directories are exposed.
+- **repo-web**: nginx, read-only repository mount, directory listing, GET/HEAD only, HTTP healthcheck, configurable host port. No Docker socket or builder work/state directories are exposed.
 - **Catalog**: `catalog/packages.yaml` contains all product definitions, source settings, installer/uninstaller arguments, detection and redistribution classifications. No application catalog is embedded in Python.
 - **Publication**: installers download to private `work/`, pass format and checksum checks, enter `CLIENT_DATA`, and are packaged using `OPSI/control.toml`. OPSI extracts each archive again before publication. Complete files are atomically renamed into the repository; metadata is generated outside the served directory, then atomically replaced. Failed metadata generation prevents retention deletion.
 
@@ -20,20 +20,20 @@ Repository files include `.opsi`, `.opsi.md5`, `.opsi.zsync`, `.opsi.provenance.
 
 ## Applications
 
-See [the catalog](catalog/packages.yaml) for the authoritative enabled/disabled state and exact options. The included recipes cover Firefox, Thunderbird, Chrome, 7-Zip, VLC, Notepad++, LibreOffice, KeePassXC, Git for Windows, Visual Studio Code, SumatraPDF, PuTTY, PowerToys, RustDesk, GIMP, Audacity, OBS Studio, Python 3.14, Temurin JDK 21 and Everything Search.
+See [the catalog](catalog/packages.yaml) for the authoritative enabled/disabled state and exact options. The included recipes cover common Windows applications (Firefox, Thunderbird, Chrome, 7-Zip, VLC, Notepad++, LibreOffice, KeePassXC, Git for Windows, Visual Studio Code, SumatraPDF, PuTTY, PowerToys, RustDesk, GIMP, Audacity, OBS Studio, Python, Temurin JDK, Everything Search, and more).
 
-VLC and GIMP are disabled because live vendor URLs redirect installers to externally operated mirrors outside the strict vendor-owned-host policy. Their metadata adapters and recipes are retained. FileZilla, Inkscape and WinSCP also start disabled because safe automation or official download routes have not been verified. Disabled records explicitly explain the reason and are skipped. Do not merely toggle them on: complete the source, installer, detection and uninstall configuration first.
+Some recipes are disabled because live vendor URLs redirect installers to externally operated mirrors outside the strict vendor-owned-host policy. Their metadata adapters and recipes are retained. Disabled records explicitly explain the reason and are skipped. Do not merely toggle them on: complete the source, installer, detection and uninstall configuration first.
 
 Enabled recipes have metadata/download/package validation as recorded in [VALIDATION.md](docs/VALIDATION.md). **Windows client acceptance testing is still required before broad deployment.** A valid OPSI archive does not prove every vendor's installer, upgrade and uninstaller works on your Windows image. Test on a representative OPSI-managed VM, including a second setup, an upgrade and uninstall. Current recipes target machine-wide Windows x64; ARM64 and x86 clients are not supported. Firefox/Thunderbird use en-US builds. Configure language URLs explicitly if required.
 
-This installation uses **HTTP_PORT=37563** in `.env`, selected as a free port with administrator authorization. The Compose default remains 8088 for fresh installations; integration URLs below use this host's selected port.
+This installation uses a configurable HTTP port (default 8088) set via `.env`. The Compose default is 8088 for fresh installations; integration URLs below use this host's selected port.
 
 ## Requirements and installation
 
 Use a Linux host with Docker Engine and modern Compose (`docker compose`), HTTPS access to the official source hosts, and adequate disk space. Plan for at least 15–25 GB for the initial catalog plus retained versions and temporary copies; actual space depends on enabled products. The builder image contains official OPSI server tooling but never starts OPSI server processes. Linux amd64 and arm64 hosts can build Windows x64 packages.
 
 ```bash
-cd /opt/opsi/opsi-auto-repo
+cd /path/to/opsi-auto-repo
 cp -n .env.example .env
 mkdir -p repository state work
 # Set BUILDER_UID and BUILDER_GID in .env to these directory owners:
@@ -48,10 +48,10 @@ The builder starts its first full run immediately. Monitor it:
 
 ```bash
 docker compose logs -f repo-builder
-curl -f http://HOST-IP:37563/
+curl -f http://HOST-IP:PORT/
 ```
 
-On this prepared workspace some packages may already exist from validation; they will be checked and skipped. The default bind address is all interfaces. Restrict port 37563 to your depot network before using this as a private repository, or set `HTTP_BIND_ADDRESS` to the host's LAN address. This server has no authentication or TLS termination by default. Put it behind an authenticated HTTPS reverse proxy if needed.
+On a prepared workspace some packages may already exist from validation; they will be checked and skipped. The default bind address is all interfaces. Restrict the HTTP port to your depot network before using this as a private repository, or set `HTTP_BIND_ADDRESS` to the host's LAN address. This server has no authentication or TLS termination by default. Put it behind an authenticated HTTPS reverse proxy if needed.
 
 ## Configuration
 
@@ -233,9 +233,9 @@ Only one writer runs at a time using a file lock. Finished work directories are 
 
 ## Add the repository to OPSI and automate depot imports
 
-Follow [the exact integration commands](docs/INTEGRATION.md) for `/opt/opsi/opsi-docker/opsi-server`, including repository configuration, active-repository/product listing, initial import and future updates. **HOST-IP must be reachable from the OPSI container.** Do not use loopback for this separate service.
+Follow [the exact integration commands](docs/INTEGRATION.md) for your existing OPSI 4.3 server, including repository configuration, active-repository/product listing, initial import and future updates. **HOST-IP must be reachable from the OPSI container.** Do not use loopback for this separate service.
 
-The systemd service/timer in `systemd/` imports new packages and updates every six hours with random delay. On this installation it was enabled at the administrator's subsequent request. Repository rebuilding and OPSI depot importing are separate jobs. `autoSetup = false` stays the default: enabling it can schedule client deployments and remains an explicit administrator choice.
+The systemd service/timer in `systemd/` imports new packages and updates every six hours with random delay. Repository rebuilding and OPSI depot importing are separate jobs. `autoSetup = false` stays the default: enabling it can schedule client deployments and remains an explicit administrator choice.
 
 ## Security and redistribution
 
@@ -245,7 +245,7 @@ TLS verification, explicit redirect allowlists, bounded metadata/download sizes,
 
 ## Troubleshooting
 
-- **Port 8088 already allocated:** another service owns the required host port. Free it deliberately or set `HTTP_PORT` to an available port and update all depot URLs consistently. The project never stops an unrelated container.
+- **Port already allocated:** another service owns the required host port. Free it deliberately or set `HTTP_PORT` to an available port and update all depot URLs consistently. The project never stops an unrelated container.
 - **Permission denied:** match `.env` UID/GID to the writable bind-mount owners. Do not use world-writable repository directories.
 - **Builder already active:** a scheduled/manual build owns the lock. Wait or stop the periodic service before a manual update.
 - **403/429 GitHub:** configure an optional read-only token or wait for the next cycle. Do not treat rate limiting as a new version.
@@ -282,7 +282,7 @@ Restore those directories, match UID/GID, verify checksums/provenance and run a 
 Back up configuration and state, review application/source changes and increment package revisions for packaging changes. Then:
 
 ```bash
-cd /opt/opsi/opsi-auto-repo
+cd /path/to/opsi-auto-repo
 docker compose stop repo-builder
 docker compose build --pull repo-builder
 docker compose pull repo-web
