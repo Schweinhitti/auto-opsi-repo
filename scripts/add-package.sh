@@ -58,7 +58,7 @@ case "$PKG_SOURCE_TYPE" in
         GH_RELEASE_TYPE=${GH_RELEASE_TYPE:-latest}
         read -p "Prerelease (true/false) [false]: " GH_PRERELEASE
         GH_PRERELEASE=${GH_PRERELEASE:-false}
-        read -p "Asset Regex (e.g., '.*\\.exe$'): " GH_ASSET_REGEX
+read -r -p "Asset Regex (e.g., '.*\\.exe$'): " GH_ASSET_REGEX
         read -p "Allowed Hosts (comma-separated) [github.com,release-assets.githubusercontent.com,objects.githubusercontent.com]: " GH_HOSTS
         GH_HOSTS=${GH_HOSTS:-github.com,release-assets.githubusercontent.com,objects.githubusercontent.com}
         
