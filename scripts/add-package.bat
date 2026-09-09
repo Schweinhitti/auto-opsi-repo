@@ -2,7 +2,7 @@
 setlocal
 
 rem Helper script to add a new package to packages.yaml
-set PACKAGES_FILE=catalog\packages.yaml
+set "PACKAGES_FILE=%~dp0..\catalog\packages.yaml"
 
 if not exist "%PACKAGES_FILE%" (
     echo Error: %PACKAGES_FILE% not found!
