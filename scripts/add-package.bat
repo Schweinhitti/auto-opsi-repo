@@ -19,7 +19,7 @@ set /p PKG_NAME=Package Name:
 set /p PKG_DESC=Package Description: 
 set /p PKG_ENABLED=Enabled (true/false) [true]: 
 if not defined PKG_ENABLED set PKG_ENABLED=true
-set /p PKG_SOURCE_TYPE=Source Type (mozilla, winget_manifest, github_release, videolan, microsoft): 
+set /p PKG_SOURCE_TYPE=Source Type (mozilla, winget_manifest, github_release, videolan, microsoft, manual): 
 
 set "NEW_PACKAGE=    - id: %PKG_ID%"
 >>"%PACKAGES_FILE%" echo(%NEW_PACKAGE%
