@@ -101,6 +101,7 @@ if /i "%PKG_SOURCE_TYPE%"=="mozilla" (
 rem Add common sections
 set /p PKG_ARCH=Architecture (comma-separated) [x64]: 
 if not defined PKG_ARCH set PKG_ARCH=x64
+set "PKG_ARCH=%PKG_ARCH:,= %"
 >>"%PACKAGES_FILE%" echo(    architecture:
 for %%a in (%PKG_ARCH%) do >>"%PACKAGES_FILE%" echo(      - %%a
 
