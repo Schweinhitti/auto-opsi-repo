@@ -1,16 +1,49 @@
 version: 2
 updates:
-  - package-ecosystem: pip
+  - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: weekly
+      interval: "daily"
+      time: "04:00"
+    open-pull-requests-limit: 10
+    allow:
+      - dependency-type: "all"
+    commit-message:
+      prefix: "deps"
+    labels:
+      - "dependencies"
+      - "pip"
+    reviewers:
+      - "schweinhitti"
 
-  - package-ecosystem: pip
+  - package-ecosystem: "pip"
     directory: "/builder"
     schedule:
-      interval: weekly
+      interval: "daily"
+      time: "04:00"
+    open-pull-requests-limit: 10
+    allow:
+      - dependency-type: "all"
+    commit-message:
+      prefix: "deps(builder)"
+    labels:
+      - "dependencies"
+      - "pip"
+    reviewers:
+      - "schweinhitti"
 
-  - package-ecosystem: github-actions
+  - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: weekly
+      interval: "daily"
+      time: "04:00"
+    open-pull-requests-limit: 10
+    allow:
+      - dependency-type: "all"
+    commit-message:
+      prefix: "deps(actions)"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    reviewers:
+      - "schweinhitti"
