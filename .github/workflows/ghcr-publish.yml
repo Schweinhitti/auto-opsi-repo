@@ -47,4 +47,4 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: 'version=${{ github.event.pull_request.number || '' }}'
+          labels: "version=${{ github.event.pull_request.number || '' }}"
