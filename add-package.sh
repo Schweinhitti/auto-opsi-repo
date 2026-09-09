@@ -81,14 +81,14 @@ case "$PKG_SOURCE_TYPE" in
         [ -n "$MOZ_HOSTS" ] || fail "Mozilla allowed hosts are required"
         NEW_PACKAGE+="\n    source:"
         NEW_PACKAGE+="\n      type: mozilla"
-        NEW_PACKAGE+="\n      product: $(escape_yaml "$MOZ_PRODUCT")"
+        NEW_PACKAGE+="\n      product: $MOZ_PRODUCT"
         NEW_PACKAGE+="\n      channel: $MOZ_CHANNEL"
-        NEW_PACKAGE+="\n      version_url: $(escape_yaml "$MOZ_VERSION_URL")"
+        NEW_PACKAGE+="\n      version_url: $MOZ_VERSION_URL"
         NEW_PACKAGE+="\n      version_field: $MOZ_VERSION_FIELD"
-        NEW_PACKAGE+="\n      download_url_template: $(escape_yaml "$MOZ_DOWNLOAD_URL_TEMPLATE")"
+        NEW_PACKAGE+="\n      download_url_template: $MOZ_DOWNLOAD_URL_TEMPLATE"
         NEW_PACKAGE+="\n      allowed_hosts:"
         IFS=',' read -ra HOSTS <<< "$MOZ_HOSTS"
-        for host in "${HOSTS[@]}"; do NEW_PACKAGE+="\n        - $(escape_yaml "$host")"; done
+        for host in "${HOSTS[@]}"; do NEW_PACKAGE+="\n        - $host"; done
         ;;
     winget_manifest)
         read -p "Winget Package Identifier (e.g., Google.Chrome): " WINGET_ID
@@ -97,10 +97,10 @@ case "$PKG_SOURCE_TYPE" in
         [ -n "$WINGET_HOSTS" ] || fail "Allowed hosts are required"
         NEW_PACKAGE+="\n    source:"
         NEW_PACKAGE+="\n      type: winget_manifest"
-        NEW_PACKAGE+="\n      package_identifier: $(escape_yaml "$WINGET_ID")"
+        NEW_PACKAGE+="\n      package_identifier: $WINGET_ID"
         NEW_PACKAGE+="\n      allowed_hosts:"
         IFS=',' read -ra HOSTS <<< "$WINGET_HOSTS"
-        for host in "${HOSTS[@]}"; do NEW_PACKAGE+="\n        - $(escape_yaml "$host")"; done
+        for host in "${HOSTS[@]}"; do NEW_PACKAGE+="\n        - $host"; done
         ;;
     github_release)
         read -p "GitHub Repo (format: user/repo): " GH_REPO
@@ -119,16 +119,16 @@ case "$PKG_SOURCE_TYPE" in
         fi
         NEW_PACKAGE+="\n    source:"
         NEW_PACKAGE+="\n      type: github_release"
-        NEW_PACKAGE+="\n      repo: $(escape_yaml "$GH_REPO")"
+        NEW_PACKAGE+="\n      repo: $GH_REPO"
         NEW_PACKAGE+="\n      release_type: $GH_RELEASE_TYPE"
         NEW_PACKAGE+="\n      prerelease: $GH_PRERELEASE"
         if [ "$GH_RELEASE_TYPE" = "tag" ]; then
-            NEW_PACKAGE+="\n      tag: $(escape_yaml "$GH_TAG")"
+            NEW_PACKAGE+="\n      tag: $GH_TAG"
         fi
-        NEW_PACKAGE+="\n      asset_regex: $(escape_yaml "$GH_ASSET_REGEX")"
+        NEW_PACKAGE+="\n      asset_regex: $GH_ASSET_REGEX"
         NEW_PACKAGE+="\n      allowed_hosts:"
         IFS=',' read -ra HOSTS <<< "$GH_HOSTS"
-        for host in "${HOSTS[@]}"; do NEW_PACKAGE+="\n        - $(escape_yaml "$host")"; done
+        for host in "${HOSTS[@]}"; do NEW_PACKAGE+="\n        - $host"; done
         ;;
     videolan)
         read -p "Version URL (e.g., https://download.videolan.org/pub/videolan/vlc/): " VL_VERSION_URL
@@ -141,12 +141,12 @@ case "$PKG_SOURCE_TYPE" in
         [ -n "$VL_HOSTS" ] || fail "Allowed hosts are required"
         NEW_PACKAGE+="\n    source:"
         NEW_PACKAGE+="\n      type: videolan"
-        NEW_PACKAGE+="\n      version_url: $(escape_yaml "$VL_VERSION_URL")"
-        NEW_PACKAGE+="\n      version_regex: $(escape_yaml "$VL_VERSION_REGEX")"
-        NEW_PACKAGE+="\n      download_url_template: $(escape_yaml "$VL_DOWNLOAD_URL")"
+        NEW_PACKAGE+="\n      version_url: $VL_VERSION_URL"
+        NEW_PACKAGE+="\n      version_regex: $VL_VERSION_REGEX"
+        NEW_PACKAGE+="\n      download_url_template: $VL_DOWNLOAD_URL"
         NEW_PACKAGE+="\n      allowed_hosts:"
         IFS=',' read -ra HOSTS <<< "$VL_HOSTS"
-        for host in "${HOSTS[@]}"; do NEW_PACKAGE+="\n        - $(escape_yaml "$host")"; done
+        for host in "${HOSTS[@]}"; do NEW_PACKAGE+="\n        - $host"; done
         ;;
     microsoft)
         read -p "API URL (e.g., https://update.code.visualstudio.com/api/update/win32-x64/stable/latest): " MS_API_URL
@@ -155,10 +155,10 @@ case "$PKG_SOURCE_TYPE" in
         [ -n "$MS_HOSTS" ] || fail "Allowed hosts are required"
         NEW_PACKAGE+="\n    source:"
         NEW_PACKAGE+="\n      type: microsoft"
-        NEW_PACKAGE+="\n      api_url: $(escape_yaml "$MS_API_URL")"
+        NEW_PACKAGE+="\n      api_url: $MS_API_URL"
         NEW_PACKAGE+="\n      allowed_hosts:"
         IFS=',' read -ra HOSTS <<< "$MS_HOSTS"
-        for host in "${HOSTS[@]}"; do NEW_PACKAGE+="\n        - $(escape_yaml "$host")"; done
+        for host in "${HOSTS[@]}"; do NEW_PACKAGE+="\n        - $host"; done
         ;;
     manual)
         echo "Using manual source configuration."
@@ -190,7 +190,7 @@ NEW_PACKAGE+="\n      type: $PKG_INST_TYPE"
 if [ -n "$PKG_SILENT_ARGS" ]; then
     NEW_PACKAGE+="\n      silent_args:"
     IFS=' ' read -ra ARGS <<< "$PKG_SILENT_ARGS"
-    for arg in "${ARGS[@]}"; do NEW_PACKAGE+="\n        - $(escape_yaml "$arg")"; done
+    for arg in "${ARGS[@]}"; do NEW_PACKAGE+="\n        - $arg"; done
 fi
 if [ "$PKG_INST_TYPE" = "zip" ]; then
     read -p "ZIP Target Directory (e.g., C:\\Program Files\\MyApp): " PKG_ZIP_TARGET_DIR
@@ -218,11 +218,11 @@ fi
 NEW_PACKAGE+="\n    detection:"
 NEW_PACKAGE+="\n      method: $PKG_DET_METHOD"
 if [ "$PKG_DET_METHOD" = "registry" ]; then
-    NEW_PACKAGE+="\n      display_name_regex: $(escape_yaml "$PKG_DISPLAY_NAME")"
+    NEW_PACKAGE+="\n      display_name_regex: $PKG_DISPLAY_NAME"
 elif [ "$PKG_DET_METHOD" = "file_version" ]; then
-    NEW_PACKAGE+="\n      path: $(escape_yaml "$PKG_DET_PATH")"
+    NEW_PACKAGE+="\n      path: $PKG_DET_PATH"
 elif [ "$PKG_DET_METHOD" = "custom" ]; then
-    NEW_PACKAGE+="\n      script: $(escape_yaml "$PKG_DET_SCRIPT")"
+    NEW_PACKAGE+="\n      script: $PKG_DET_SCRIPT"
 fi
 
 read -p "Uninstall Method (registry, msi, command, vendor, zip, msix) [registry]: " PKG_UNINST_METHOD
@@ -257,16 +257,16 @@ NEW_PACKAGE+="\n      method: $PKG_UNINST_METHOD"
 if [ -n "$PKG_UNINST_SILENT_ARGS" ]; then
     NEW_PACKAGE+="\n      silent_args:"
     IFS=' ' read -ra UARGS <<< "$PKG_UNINST_SILENT_ARGS"
-    for arg in "${UARGS[@]}"; do NEW_PACKAGE+="\n        - $(escape_yaml "$arg")"; done
+    for arg in "${UARGS[@]}"; do NEW_PACKAGE+="\n        - $arg"; done
 fi
 if [ "$PKG_UNINST_METHOD" = "msi" ]; then
-    NEW_PACKAGE+="\n      product_code: $(escape_yaml "$PKG_UNINST_PRODUCT_CODE")"
+    NEW_PACKAGE+="\n      product_code: $PKG_UNINST_PRODUCT_CODE"
 elif [ "$PKG_UNINST_METHOD" = "vendor" ]; then
-    NEW_PACKAGE+="\n      vendor_command: $(escape_yaml "$PKG_UNINST_VENDOR_CMD")"
+    NEW_PACKAGE+="\n      vendor_command: $PKG_UNINST_VENDOR_CMD"
 elif [ "$PKG_UNINST_METHOD" = "command" ]; then
-    NEW_PACKAGE+="\n      command: $(escape_yaml "$PKG_UNINST_COMMAND")"
+    NEW_PACKAGE+="\n      command: $PKG_UNINST_COMMAND"
 elif [ "$PKG_UNINST_METHOD" = "msix" ]; then
-    NEW_PACKAGE+="\n      package_name: $(escape_yaml "$PKG_UNINST_MSIX_NAME")"
+    NEW_PACKAGE+="\n      package_name: $PKG_UNINST_MSIX_NAME"
 fi
 
 read -p "Redistribution (internal_only, allowed, unknown) [internal_only]: " PKG_REDIST
