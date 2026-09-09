@@ -98,6 +98,10 @@ if /i "%PKG_SOURCE_TYPE%"=="mozilla" (
         >>"%PACKAGES_FILE%" echo(      allowed_hosts:
         for %%h in (%MS_HOSTS%) do >>"%PACKAGES_FILE%" echo(        - %%h
     )
+) else if /i "%PKG_SOURCE_TYPE%"=="manual" (
+    echo Using manual source configuration.
+    >>"%PACKAGES_FILE%" echo(    source:
+    >>"%PACKAGES_FILE%" echo(      type: manual
 ) else (
     echo Unsupported source type. Using minimal source configuration.
     >>"%PACKAGES_FILE%" echo(    source:

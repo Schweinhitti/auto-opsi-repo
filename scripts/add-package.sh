@@ -98,6 +98,11 @@ read -r -p "Asset Regex (e.g., '.*\\.exe$'): " GH_ASSET_REGEX
         IFS=',' read -ra HOSTS <<< "$MS_HOSTS" && \
         for host in "${HOSTS[@]}"; do NEW_PACKAGE+="\n        - $host"; done
         ;;
+    manual)
+        echo "Using manual source configuration."
+        NEW_PACKAGE+="\n    source:"
+        NEW_PACKAGE+="\n      type: manual"
+        ;;
     *)
         echo "Unsupported source type. Using minimal source configuration."
         NEW_PACKAGE+="\n    source:"
