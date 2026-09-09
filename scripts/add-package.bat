@@ -19,6 +19,11 @@ set /p PKG_NAME=Package Name:
 set /p PKG_DESC=Package Description: 
 set /p PKG_ENABLED=Enabled (true/false) [true]: 
 if not defined PKG_ENABLED set PKG_ENABLED=true
+if /i "%PKG_ENABLED%"=="false" set /p PKG_DISABLED_REASON=Disabled reason:
+if not defined PKG_DISABLED_REASON if /i "%PKG_ENABLED%"=="false" (
+  echo Error: disabled packages require a reason.
+  exit /b 1
+)
 set /p PKG_SOURCE_TYPE=Source Type (mozilla, winget_manifest, github_release, videolan, microsoft, manual): 
 
 set "NEW_PACKAGE=    - id: %PKG_ID%"
@@ -27,6 +32,7 @@ set "NEW_PACKAGE=    - id: %PKG_ID%"
 >>"%PACKAGES_FILE%" echo(    name: "%PKG_NAME%"
 >>"%PACKAGES_FILE%" echo(    description: "%PKG_DESC%"
 >>"%PACKAGES_FILE%" echo(    enabled: %PKG_ENABLED%
+if /i "%PKG_ENABLED%"=="false" >>"%PACKAGES_FILE%" echo(    disabled_reason: "%PKG_DISABLED_REASON%"
 
 rem Add source section based on type
 if /i "%PKG_SOURCE_TYPE%"=="mozilla" (
