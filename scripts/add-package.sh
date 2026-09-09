@@ -16,7 +16,7 @@ read -p "Package Name: " PKG_NAME
 read -p "Package Description: " PKG_DESC
 read -p "Enabled (true/false) [true]: " PKG_ENABLED
 PKG_ENABLED=${PKG_ENABLED:-true}
-read -p "Source Type (mozilla, winget_manifest, github_release, videolan, microsoft): " PKG_SOURCE_TYPE
+read -p "Source Type (mozilla, winget_manifest, github_release, videolan, microsoft, manual): " PKG_SOURCE_TYPE
 
 # Basic template for the package entry
 NEW_PACKAGE="  - id: $PKG_ID"
