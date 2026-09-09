@@ -146,8 +146,7 @@ PKG_REV=${PKG_REV:-1}
 NEW_PACKAGE+="\n    package_revision: $PKG_REV"
 
 # Add the new package to the YAML file
-echo "" >> "$PACKAGES_FILE"
-echo "$NEW_PACKAGE" >> "$PACKAGES_FILE"
+printf "\n%b\n" "$NEW_PACKAGE" >> "$PACKAGES_FILE"
 
 echo ""
 echo "Package '$PKG_ID' has been added to $PACKAGES_FILE"
