@@ -57,8 +57,8 @@ docker compose up -d --build
 # Manual build
 docker compose run --rm repo-builder --once --product auto-firefox
 ```
-
 ## Directory Structure
+
 - `catalog/` - Product definitions and overrides
 - `builder/` - Python builder source code
 - `repository/` - OPSI repository data
@@ -66,6 +66,18 @@ docker compose run --rm repo-builder --once --product auto-firefox
 - `work/` - Temporary download and build workspace
 - `docs/` - Documentation files
 - `.github/workflows/` - CI/CD workflows
+- `add-package.sh` - Bash helper for adding packages (Linux/macOS)
+- `add-package.bat` - Batch helper for adding packages (Windows)
+
+## Documentation Maintenance
+
+The README.md should continuously grow whenever changes are made to:
+- Helper scripts (add-package.sh, add-package.bat)
+- Configuration scripts
+- Build processes
+- Any tooling or documentation that affects how users interact with the project
+
+When adding new functionality that users need to understand, document it clearly in the README with examples and usage instructions.
 
 ## Testing Focus
 Unit tests mock external network calls and focus on:

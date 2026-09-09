@@ -83,6 +83,40 @@ services:
 
 The bundle must contain the trust roots needed for all upstream sites. No insecure TLS bypass setting is provided.
 
+## Helper scripts for package management
+
+Two interactive helpers are provided at the repository root for adding new products to `catalog/packages.yaml`:
+
+### `add-package.sh` (Linux / macOS / WSL)
+
+```bash
+./add-package.sh
+```
+
+Prompts for:
+- Package ID, OPSI product ID, name, description
+- Enabled/disabled state with optional disabled reason
+- Source type: `mozilla`, `winget_manifest`, `github_release`, `videolan`, `microsoft`, `manual`
+- Source-specific parameters (host allowlists, asset regexes, URLs, etc.)
+- Architecture (default `x64`)
+- Installer type (`exe`, `msi`, `msix`, `zip`) with mandatory silent arguments for exe/msi
+- Detection method (`registry`, `file_version`, `custom`) with required fields per method
+- Uninstall method (`registry`, `msi`, `command`, `vendor`, `zip`, `msix`)
+- Redistribution class (`internal_only`, `allowed`, `unknown`)
+- Package revision (default `1`)
+
+All inputs are validated before writing; YAML values are escaped. The script exits on missing required fields rather than producing invalid catalog entries.
+
+### `add-package.bat` (Windows)
+
+```cmd
+add-package.bat
+```
+
+Same prompts and validation logic as the Bash version, implemented for native Windows CMD with delayed expansion for reliable variable handling inside conditional blocks.
+
+Both scripts append a correctly indented package entry to `catalog/packages.yaml`. Review the file after running to confirm formatting and completeness.
+
 ## Dry run, manual update and logs
 
 ```bash
