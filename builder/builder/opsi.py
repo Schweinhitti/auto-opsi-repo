@@ -28,7 +28,7 @@ def generate(package, release, version, destination, templates, overrides, insta
     env = Environment(
         loader=FileSystemLoader(str(templates)),
         undefined=StrictUndefined,
-        autoescape=False,
+        autoescape=True,
     )
     context = {
         "p": package,
