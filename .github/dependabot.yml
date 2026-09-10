@@ -47,3 +47,19 @@ updates:
       - "github-actions"
     reviewers:
       - "schweinhitti"
+
+  - package-ecosystem: "docker"
+    directory: "/builder"
+    schedule:
+      interval: "daily"
+      time: "04:00"
+    open-pull-requests-limit: 5
+    allow:
+      - dependency-type: "all"
+    commit-message:
+      prefix: "deps(builder)"
+    labels:
+      - "dependencies"
+      - "docker"
+    reviewers:
+      - "schweinhitti"
