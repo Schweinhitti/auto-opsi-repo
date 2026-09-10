@@ -13,8 +13,6 @@ updates:
     labels:
       - "dependencies"
       - "pip"
-    reviewers:
-      - "schweinhitti"
 
   - package-ecosystem: "pip"
     directory: "/builder"
@@ -29,8 +27,6 @@ updates:
     labels:
       - "dependencies"
       - "pip"
-    reviewers:
-      - "schweinhitti"
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -45,8 +41,6 @@ updates:
     labels:
       - "dependencies"
       - "github-actions"
-    reviewers:
-      - "schweinhitti"
 
   - package-ecosystem: "docker"
     directory: "/builder"
@@ -61,5 +55,3 @@ updates:
     labels:
       - "dependencies"
       - "docker"
-    reviewers:
-      - "schweinhitti"
