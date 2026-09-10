@@ -1,0 +1,19 @@
+.github/dependabot.yml
+  s_f4feb549062be4::t_bd94727c1f1f77 49-63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "e88f0ac51f603c57e612b9c2338d91addb60c8c8",
+  "prompts": {},
+  "sessions": {
+    "s_f4feb549062be4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f7594d651ffe5RUUIek0u8E9a1",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
