@@ -1,0 +1,19 @@
+builder/Dockerfile
+  s_f4feb549062be4::t_94d358b7e1776b 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "4d4df25987fc2ab730e8824edbc4ac4de3a351ff",
+  "prompts": {},
+  "sessions": {
+    "s_f4feb549062be4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f7594d651ffe5RUUIek0u8E9a1",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
