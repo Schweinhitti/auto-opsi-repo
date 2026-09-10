@@ -38,7 +38,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=raw,value=v1
+            type=raw,value=${{ github.sha }}
       
       - name: Build and push Docker image
         uses: docker/build-push-action@v7
