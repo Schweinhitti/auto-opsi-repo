@@ -1,0 +1,19 @@
+.github/workflows/ci.yml
+  s_f4feb549062be4::t_4a483407685c01 14-15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "d4b6840b307de847fcfff2c458cb8393eb2942c4",
+  "prompts": {},
+  "sessions": {
+    "s_f4feb549062be4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f7594d651ffe5RUUIek0u8E9a1",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
