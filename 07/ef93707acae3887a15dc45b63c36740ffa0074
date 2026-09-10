@@ -1,0 +1,23 @@
+.github/workflows/ghcr-publish.yml
+  s_f4feb549062be4::t_6eec1d123636e7 45
+  s_f4feb549062be4::t_351a86f6d2e469 23
+  s_f4feb549062be4::t_2232f41073ea50 27
+  s_f4feb549062be4::t_3fc249400c4a4d 35
+  s_f4feb549062be4::t_4e5d01a636c2ca 18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "07ef93707acae3887a15dc45b63c36740ffa0074",
+  "prompts": {},
+  "sessions": {
+    "s_f4feb549062be4": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f7594d651ffe5RUUIek0u8E9a1",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
