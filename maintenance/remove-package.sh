@@ -43,8 +43,15 @@ if len(updated) == len(packages):
 
 data["packages"] = updated
 
-with open(packages_file, "w") as f:
+import os
+import tempfile
+
+with tempfile.NamedTemporaryFile("w", dir=os.path.dirname(packages_file), delete=False) as f:
     yaml.dump(data, f, default_flow_style=False, sort_keys=False)
+    f.flush()
+    os.fsync(f.fileno())
+
+os.replace(f.name, packages_file)
 
 print(f"Package '{pkg_id}' removed successfully.")
 PYEOF
