@@ -1,0 +1,29 @@
+maintenance/start.sh
+  s_e5ca791fc2f26e::t_e3b584ad5ac96f 1-7
+maintenance/build.sh
+  s_e5ca791fc2f26e::t_8d1c96031f385b 1-7
+maintenance/add-package.sh
+  s_e5ca791fc2f26e::t_4463fe2eacef71 1-15
+maintenance/remove-package.sh
+  s_e5ca791fc2f26e::t_e940340a5ca502 1-57
+maintenance/README.md
+  s_e5ca791fc2f26e::t_bc644fce749ad3 1-61
+maintenance/stop.sh
+  s_e5ca791fc2f26e::t_c913b5e548b59d 1-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "7ef6d6f86099a7b7546834c43a089c0b9865c7a3",
+  "prompts": {},
+  "sessions": {
+    "s_e5ca791fc2f26e": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f708c21cdffe722D9cJWZ2VrP4",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
