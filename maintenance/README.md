@@ -32,7 +32,7 @@ Rebuild the docker images:
 ./maintenance/build.sh
 ```
 
-This runs `docker compose build` to rebuild images after changes to the builder/Dockerfile or environment variables.
+This runs `docker compose build` to rebuild images after changes to the builder/Dockerfile or build arguments. For runtime environment changes, run `docker compose up -d` (or `docker compose up -d --build`).
 
 ### `add-package.sh`
 
