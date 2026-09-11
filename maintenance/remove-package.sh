@@ -17,7 +17,7 @@ PKG_ID="$1"
 
 echo "Searching for package '$PKG_ID' in $PACKAGES_FILE..."
 
-if grep -q "    id: $PKG_ID$" "$PACKAGES_FILE" || grep -qE "^  - id: $PKG_ID$" "$PACKAGES_FILE"; then
+if grep -qE "^ - id: $PKG_ID$" "$PACKAGES_FILE"; then
     echo "Package '$PKG_ID' found in catalog."
     echo "WARNING: This will remove the package entry (id, opsi_product_id, name, etc.) from $PACKAGES_FILE."
     echo "It will NOT remove the built .opsi packages in the repository/ directory."
