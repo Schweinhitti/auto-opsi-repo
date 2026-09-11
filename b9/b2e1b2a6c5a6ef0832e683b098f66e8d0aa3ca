@@ -1,0 +1,59 @@
+helper/status.sh
+  s_a6c833d765c4a0::t_97e8defbfa33e1 1-42
+helper/cleanup.sh
+  s_eadb0fd9d82240::t_1c1b485fb6ef4b 1-29
+helper/logs.sh
+  s_7909c2d9de6cb3::t_db93f71b91bbf5 1-33
+helper/build.sh
+  s_e2d9a87e52f675::t_12370ac8fc5d13 1-16
+helper/README.md
+  s_30664510627c04::t_9bfe828b5bae46 1-44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "b9b2e1b2a6c5a6ef0832e683b098f66e8d0aa3ca",
+  "prompts": {},
+  "sessions": {
+    "s_30664510627c04": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f6d9cbd8dffeH1NeLSKKCMQPC3",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    },
+    "s_7909c2d9de6cb3": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f6d9c01acffeKzqS73iDH9KMK5",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    },
+    "s_a6c833d765c4a0": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f6d9c1674ffeqv3Ga66924iiDi",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    },
+    "s_e2d9a87e52f675": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f6d9c1bc7ffeVIJpdhVr6CEn2M",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    },
+    "s_eadb0fd9d82240": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f6d9b8466ffeEwbJOFfzrsfCfW",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
