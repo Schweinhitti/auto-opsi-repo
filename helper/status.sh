@@ -19,24 +19,16 @@ echo ""
 echo "=== Last build summary ==="
 if [ -f "state/last-run.json" ]; then
     python3 -c "
-import json, sys
+import json
 with open('state/last-run.json') as f:
     d = json.load(f)
-print(f\"  Updated: {d.get('updated', 0)}\")
-print(f\"  Unchanged: {d.get('unchanged', 0)}\")
-print(f\"  Failed: {d.get('failed', 0)}\")
-print(f\"  Warnings: {d.get('warnings', 0)}\")
-print(f\"  Disabled: {d.get('disabled', 0)}\")
+summary = d.get('summary', d)
+print(f\"  Updated: {len(summary.get('Updated', []))}\")
+print(f\"  Unchanged: {len(summary.get('Unchanged', []))}\")
+print(f\"  Failed: {len(summary.get('Failed', []))}\")
+print(f\"  Warnings: {len(summary.get('Warnings', []))}\")
+print(f\"  Disabled: {len(summary.get('Disabled', []))}\")
 " 2>/dev/null || echo "  Could not parse last-run.json"
 else
     echo "  No last-run.json found (no completed runs yet)"
-fi
-
-echo ""
-echo "=== Repository file count ==="
-if [ -d "repository" ]; then
-    count=$(find repository -name '*.opsi' 2>/dev/null | wc -l)
-    echo "  Packages in repository: $count"
-else
-    echo "  Repository directory not found"
 fi

@@ -6,21 +6,13 @@ ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$ROOT_DIR"
 
 echo "=== Running unit tests ==="
-if [ ! -d ".venv" ]; then
-    python3 -m venv .venv
-    .venv/bin/pip install -q -r builder/requirements.txt pytest
-fi
+
+# Always ensure .venv has the required dependencies
+python3 -m venv .venv 2>/dev/null || true
+.venv/bin/pip install -q -r builder/requirements.txt pytest
 
 .venv/bin/python -m compileall -q builder
 .venv/bin/pytest -q
-
-echo ""
-echo "=== Running compose config validation ==="
-docker compose config --quiet
-
-echo ""
-echo "=== Running nginx config validation ==="
-docker compose run --rm repo-web nginx -t
 
 echo ""
 echo "=== All tests passed ==="

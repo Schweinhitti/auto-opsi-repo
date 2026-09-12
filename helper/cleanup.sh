@@ -15,15 +15,8 @@ echo "--- Removing stopped containers ---"
 docker compose rm -f
 
 echo ""
-echo "--- Removing unused Docker resources ---"
-docker builder prune -f
-docker image prune -f
-
-echo ""
-echo "--- Cleaning work directory ---"
-rm -rf work/*
-mkdir -p work
-echo "work/ cleaned"
-
-echo ""
-echo "=== Cleanup complete ==="
+echo "--- Cleanup complete ---"
+# Note: Docker resource pruning (builder/image) is project-specific.
+# To clean only this project's resources, run:
+#   docker compose down --rmi all --volumes
+echo "  (Skipping global Docker resource pruning to avoid affecting other projects)"
