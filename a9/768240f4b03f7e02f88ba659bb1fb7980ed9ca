@@ -1,0 +1,25 @@
+helper/test.sh
+  s_30664510627c04::t_b9af256a72ae66 10-12,18
+helper/status.sh
+  s_30664510627c04::t_be58f7711658cd 22,25-30,34
+helper/cleanup.sh
+  s_30664510627c04::t_9604a5297376c6 18-22
+helper/run.sh
+  s_30664510627c04::t_358ccfacc4787f 10-13,17-22,25-26,32-42,49-50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "a9768240f4b03f7e02f88ba659bb1fb7980ed9ca",
+  "prompts": {},
+  "sessions": {
+    "s_30664510627c04": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f6d9cbd8dffeH1NeLSKKCMQPC3",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
