@@ -75,6 +75,10 @@ The system is configured via environment variables, typically stored in a `.env`
 | `HTTP_PORT` | `8088` | The host port for the web server. |
 | `BUILDER_UID`/`GID` | `1000` | User ID/Group ID for file ownership in volumes. |
 | `ALLOW_CHANGED_CHECKSUM` | `false` | Permits hash changes for an existing version. |
+| `GITHUB_TOKEN` | `empty` | Optional read-only GitHub token; improves unauthenticated API limits. |
+| `MAX_DOWNLOAD_BYTES` | `2147483648` | Maximum size of one installer (2 GiB). |
+| `HTTP_BIND_ADDRESS` | `0.0.0.0` | Host address bound to HTTP_PORT. |
+| `LOG_LEVEL` | `INFO` | Builder logging level. |
 
 ## Installation and Quick Start
 
