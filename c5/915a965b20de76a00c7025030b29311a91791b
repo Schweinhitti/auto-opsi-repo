@@ -1,0 +1,19 @@
+docs/PROJECT_OVERVIEW.md
+  s_6e47558e936625::t_731f4c2f7aaabc 1-249
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "c5915a965b20de76a00c7025030b29311a91791b",
+  "prompts": {},
+  "sessions": {
+    "s_6e47558e936625": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f6acf13dbffeWvb9HjbJbe8703",
+        "model": "openrouter/free"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
