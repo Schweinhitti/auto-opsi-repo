@@ -1,0 +1,36 @@
+docs/ARCHITECTURE.md
+  s_1b0c135f48ab4e::t_f1c98b1fd8eec9 1-2,5-80,85-187
+  s_7b49655740d290::t_63d561c72bd246 81-84
+  s_1b0c135f48ab4e::t_7d09f859b8f47a 3-4,188-190
+docs/SOURCES.md
+  s_7b49655740d290::t_63d561c72bd246 12
+  s_7b49655740d290::t_f322cf412a66cc 3-4
+docs/SECURITY.md
+  s_1b0c135f48ab4e::t_f1c98b1fd8eec9 1-2,5-9,13-136,143-245
+  s_7b49655740d290::t_63d561c72bd246 137-142
+  s_1b0c135f48ab4e::t_7d09f859b8f47a 3-4,10-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "490603da1881012b939495075883c88bf4cca1b7",
+  "prompts": {},
+  "sessions": {
+    "s_1b0c135f48ab4e": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f606643b1ffe1ANCY8LtWX56bA",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    },
+    "s_7b49655740d290": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f60a15920ffesoCQUuBsjeMlku",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
