@@ -1,4 +1,6 @@
-# Validation record — 2026-09-07
+# Validation record - 2026-09-07
+
+[Back to the documentation index](README.md)
 
 The project was implemented and validated in `/opt/opsi/opsi-auto-repo` on this Linux arm64 host. This record distinguishes server-side package validation from Windows client acceptance testing.
 
@@ -80,10 +82,10 @@ Repeated live validation reached GitHub's unauthenticated hourly rate limit. The
 - Metadata publication is atomic per file; it is not a snapshot transaction across every file. Increment package revision instead of forcing replacement of an actively downloaded version URL.
 - The current OPSI metafile CLI advertises the newest archive per product. Retention preserves two local version/revision archives for recovery.
 
-## Subsequent OPSI integration — 2026-09-07
+## Subsequent OPSI integration - 2026-09-07
 
 At the administrator's explicit request, `local_auto` was added to the existing OPSI server using `http://192.168.178.6:37563`. Container-to-repository connectivity, active repository registration and product listing succeeded. Initial import exited 0; `productOnDepot_getObjects` confirmed all 17 current products on `opsi.home.arpa`, including Git/Python/Temurin revision 2. `autoSetup` remains false. The optional depot-import timer was not enabled. This supersedes the earlier no-depot-import validation limitation; Windows client acceptance testing remains outstanding.
 
-## Automatic depot imports — 2026-09-07
+## Automatic depot imports - 2026-09-07
 
 At the administrator's request, local_auto autoInstall and autoUpdate were enabled, the six-hour systemd import timer was installed/enabled, and Geos One (`geosone`) was disabled (active/autoInstall/autoUpdate false). Client autoSetup remains false. Existing Geos One packages were retained.
