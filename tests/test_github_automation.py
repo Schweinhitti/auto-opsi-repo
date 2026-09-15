@@ -24,6 +24,14 @@ def test_ci_workflow_exists_and_has_core_steps():
     assert any("ruff check ." in cmd for cmd in runs)
     assert any("pytest -q" in cmd for cmd in runs)
 
+    assert workflow["concurrency"] == {
+        "group": "${{ github.workflow }}-${{ github.ref }}",
+        "cancel-in-progress": True,
+    }
+    setup_python = next(step for step in steps if (step.get("uses") or "").startswith("actions/setup-python@"))
+    assert setup_python["with"]["cache"] == "pip"
+    assert setup_python["with"]["cache-dependency-path"] == "builder/requirements.txt"
+
 
 def test_dependabot_config_covers_pip_and_actions():
     dependabot_path = ROOT / ".github/dependabot.yml"

@@ -7,6 +7,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -16,6 +20,8 @@ jobs:
 
         with:
           python-version: '3.13'
+          cache: pip
+          cache-dependency-path: builder/requirements.txt
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
