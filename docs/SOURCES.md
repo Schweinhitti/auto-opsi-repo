@@ -1,5 +1,7 @@
 # Source and format verification
 
+[Back to the documentation index](README.md)
+
 Verified against the installed OPSI 4.3 CLI and official documentation on 2026-09-07:
 
 - [OPSI 4.3 command-line tools](https://docs.opsi.org/opsi-docs-en/4.3/server/components/commandline.html): `opsi-cli package make SOURCE_DIR DESTINATION_DIR` creates the package, MD5 and zsync sidecars.
@@ -7,7 +9,7 @@ Verified against the installed OPSI 4.3 CLI and official documentation on 2026-0
 - [OPSI Script secondary sections](https://docs.opsi.org/opsi-docs-en/4.3/opsi-script-manual/sec-section.html): `Winbatch /SysNative` and `getLastExitCode`.
 - Installed help verified `package extract PACKAGE_ARCHIVE DESTINATION_DIR`, `manage-repo metafile create DIRECTORY`, and `manage-repo metafile scan-packages DIRECTORY`. Actual package make/extract and metadata generation are part of the local validation.
 
-The builder derives from the official `uibmz/opsi-server:4.3` image for its current package tooling. Its server entrypoint is replaced, it runs as an unprivileged UID, and it has no server credentials or connection to the existing deployment. The base image is larger than a bespoke tools-only image; this avoids downloading an unverified binary or inventing install/CLI syntax. Pin `OPSI_BASE_IMAGE` to a reviewed digest for controlled image updates.
+The builder derives from the official `uibmz/opsi-server:4.3` image for its current package tooling. Its server entrypoint is replaced, it runs as an unprivileged UID, and it has no server credentials or connection to the existing deployment. The base image is larger than a bespoke tools-only image; this avoids downloading an unverified binary or inventing install/CLI syntax. For controlled image updates, replace the `FROM` value in `builder/Dockerfile` with a reviewed digest and rebuild. The current Dockerfile does not consume the Compose `OPSI_BASE_IMAGE` build argument, so changing only `.env` is ineffective.
 
 Official metadata origins include Mozilla product-details and archive infrastructure, GitHub's REST API, Microsoft's VS Code update API, Microsoft's `winget-pkgs` repository, VideoLAN's own release directory, the Document Foundation's release directory, and Adoptium's API. Installer origins and all redirected hosts are separately restricted in the catalog. A GitHub domain alone does not identify a vendor: GitHub release recipes bind the API request to an official repository, while WinGet recipes using GitHub also restrict the project path.
 
