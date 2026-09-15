@@ -1,0 +1,23 @@
+docs/CONFIGURATION.md
+  s_3da86785c45b88::t_87c447e542af55 30,74,80-84
+  s_3da86785c45b88::t_818ed0a1dd9ffe 1-29,31-73,75-79,85-126
+docs/GETTING_STARTED.md
+  s_3da86785c45b88::t_87c447e542af55 73,169
+  s_3da86785c45b88::t_818ed0a1dd9ffe 1-72,74-168,170-179
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "d30a7b86a0ceb84c10da6db7248dee10c1ba9569",
+  "prompts": {},
+  "sessions": {
+    "s_3da86785c45b88": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f60664584ffe3GtEGXB3iMsGJN",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
