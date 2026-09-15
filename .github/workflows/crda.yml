@@ -119,8 +119,29 @@ jobs:
       # process to get a SNYK_TOKEN or a CRDA_KEY
       - name: CRDA Scan
         id: scan
-        uses: redhat-actions/crda@v1
+        env:
+          CRDA_KEY: ${{ secrets.CRDA_KEY }}
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${CRDA_KEY:-}" && -z "${SNYK_TOKEN:-}" ]]; then
+            echo "No CRDA credentials configured; skipping scan."
+            exit 0
+          fi
+
+          if crda help analyze >/dev/null 2>&1; then
+            crda analyze --report-format sarif --output-file crda-results.sarif
+          elif crda help analyse >/dev/null 2>&1; then
+            crda analyse --report-format sarif --output-file crda-results.sarif
+          else
+            echo "Unable to determine CRDA CLI syntax."
+            crda --help
+            exit 1
+          fi
+
+      - name: Upload SARIF file
+        if: hashFiles('crda-results.sarif') != ''
+        uses: github/codeql-action/upload-sarif@faaca9a8f6edddba5725ffe5adefdab6669a2eca # v3.38.0
         with:
-          crda_key: ${{ secrets.CRDA_KEY }}           # Either use crda_key or snyk_token
-          # snyk_token: ${{ secrets.SNYK_TOKEN }}
-          # upload_artifact: false                    # Set this to false to skip artifact upload
+          sarif_file: crda-results.sarif
