@@ -1,0 +1,29 @@
+docs/DEVELOPMENT.md
+  s_7b49655740d290::t_f322cf412a66cc 3-4
+  s_4877068b029737::t_0c7e00756d120a 1-2,5-92,98-163
+  s_7b49655740d290::t_63d561c72bd246 93-97
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "94b12ac694a6832809a723bf50e0d83da714f4c4",
+  "prompts": {},
+  "sessions": {
+    "s_4877068b029737": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f60664339ffeAAOTL15dHIhbmP",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    },
+    "s_7b49655740d290": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f60a15920ffesoCQUuBsjeMlku",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
