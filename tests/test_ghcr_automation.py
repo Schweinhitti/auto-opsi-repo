@@ -28,3 +28,13 @@ def test_ghcr_workflow_separates_pull_request_build_from_publish():
         step for step in publish_steps if step.get("name") == "Build and push Docker image"
     )
     assert publish_image_build["with"]["push"] is True
+
+
+def test_defender_workflow_has_permissions_for_sarif_upload():
+    workflow = yaml.safe_load((ROOT / ".github/workflows/defender-for-devops.yml").read_text())
+    msdo_job = workflow["jobs"]["MSDO"]
+    assert msdo_job["permissions"] == {
+        "actions": "read",
+        "contents": "read",
+        "security-events": "write",
+    }
