@@ -1,22 +1,6 @@
 version: 2
 updates:
   - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "daily"
-      time: "04:00"
-    open-pull-requests-limit: 10
-    allow:
-      - dependency-type: "all"
-    commit-message:
-      prefix: "deps"
-    labels:
-      - "dependencies"
-      - "pip"
-    reviewers:
-      - "schweinhitti"
-
-  - package-ecosystem: "pip"
     directory: "/builder"
     schedule:
       interval: "daily"
@@ -28,7 +12,13 @@ updates:
       prefix: "deps(builder)"
     labels:
       - "dependencies"
-      - "pip"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
     reviewers:
       - "schweinhitti"
 
@@ -44,7 +34,14 @@ updates:
       prefix: "deps(actions)"
     labels:
       - "dependencies"
-      - "github-actions"
+      - "github_actions"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
     reviewers:
       - "schweinhitti"
 
@@ -60,6 +57,12 @@ updates:
       prefix: "deps(builder)"
     labels:
       - "dependencies"
-      - "docker"
+    groups:
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
     reviewers:
       - "schweinhitti"
