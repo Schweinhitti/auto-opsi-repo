@@ -1,0 +1,21 @@
+tests/test_release_automation.py
+  s_2d57cdca1db699::t_8061adb0b6497f 1-36
+.github/release.yml
+  ai_agent 1-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "b44b0baf957201663e4f1bc32f377449d87466a1",
+  "prompts": {},
+  "sessions": {
+    "s_2d57cdca1db699": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f5c5c0e3affeuH83kYvAL8u3Mb",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
