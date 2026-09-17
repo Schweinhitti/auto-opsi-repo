@@ -1,0 +1,21 @@
+tests/test_ghcr_automation.py
+  s_2d57cdca1db699::t_93f4f469569837 1,9-10,12-14,18-25,27-50
+.github/workflows/ghcr-publish.yml
+  ai_agent 9-12,58-59,89,97-103
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "7ef9ec845538e7b2a96541535be60240dd26102c",
+  "prompts": {},
+  "sessions": {
+    "s_2d57cdca1db699": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f5c5c0e3affeuH83kYvAL8u3Mb",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
