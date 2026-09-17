@@ -1,0 +1,42 @@
+name: Feature request
+description: Propose a focused improvement to the builder, repository, or package catalog
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What repository or OPSI workflow needs improvement?
+      placeholder: Describe the need without prescribing a broad redesign.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Explain the focused behavior you want and who would use it.
+    validations:
+      required: true
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Security, package, and redistribution impact
+      description: Note source, checksum, installer, privilege, Windows acceptance, or redistribution effects. Write None if there are none.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: List documentation, configuration, or existing workflows that you tried.
+    validations:
+      required: false
+  - type: checkboxes
+    id: acknowledgements
+    attributes:
+      label: Acknowledgements
+      options:
+        - label: I searched existing issues, reviewed the project scope, and included no secrets or private vulnerability details.
+          required: true

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security report
+    url: https://github.com/Schweinhitti/auto-opsi-repo/security/advisories/new
+    about: Report vulnerabilities and sensitive security findings privately.
+  - name: Documentation
+    url: https://github.com/Schweinhitti/auto-opsi-repo/blob/main/docs/README.md
+    about: Read setup, operation, package authoring, validation, and troubleshooting guides.
+  - name: Support guidance
+    url: https://github.com/Schweinhitti/auto-opsi-repo/blob/main/.github/SUPPORT.md
+    about: Check where to ask usage questions and what evidence to provide.

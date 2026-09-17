@@ -1,7 +1,27 @@
 /opt/opsi/opsi-auto-repo/
 |-- .github/
-|   |-- dependabot.yml
-|   `-- workflows/              CI, spelling, size, CVE, and GHCR automation
+|   |-- ISSUE_TEMPLATE/
+|   |   |-- bug_report.yml       Structured bug intake
+|   |   |-- feature_request.yml Structured feature intake
+|   |   `-- config.yml          Private security, docs, and support links
+|   |-- workflows/
+|   |   |-- ci.yml              Compile, lint, test, Compose, and shell checks
+|   |   |-- spelling.yml        Pull request spelling checks
+|   |   |-- size.yml            Pull request size labels
+|   |   |-- cve-lite-fix.yml    Privileged CVE fix pull requests
+|   |   |-- devskim.yml         DevSkim code scanning
+|   |   |-- defender-for-devops.yml  Microsoft security analysis
+|   |   |-- dependency-review.yml  Vulnerable dependency change gate
+|   |   |-- scorecard.yml       OpenSSF Scorecard analysis
+|   |   `-- ghcr-publish.yml    Image builds, publishing, and provenance
+|   |-- CODEOWNERS              Default review ownership
+|   |-- CODE_OF_CONDUCT.md      Community conduct policy
+|   |-- CONTRIBUTING.md         Contribution guidance
+|   |-- SECURITY.md             Private vulnerability reporting
+|   |-- SUPPORT.md              Support guidance
+|   |-- pull_request_template.md  Pull request checklist
+|   |-- dependabot.yml          Daily grouped dependency updates
+|   `-- release.yml             Generated release-note categories
 |-- builder/
 |   |-- builder/
 |   |   |-- sources/            Upstream metadata adapter protocol and implementations

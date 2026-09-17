@@ -26,14 +26,14 @@ The result must start with `Python 3.13`. Ruff is configured in `pyproject.toml`
 
 ## Local CI checks
 
-Run the same lint and test commands used by `.github/workflows/ci.yml`, plus compilation and
-Compose checks:
+Run the same checks used by `.github/workflows/ci.yml`, then the relevant Docker checks:
 
 ```bash
 .venv/bin/python -m compileall -q builder scripts tests
 .venv/bin/ruff check .
 .venv/bin/pytest -q
 docker compose config --quiet
+bash -n add-package.sh builder/entrypoint.sh helper/build.sh helper/cleanup.sh helper/dry-run.sh helper/logs.sh helper/run.sh helper/status.sh helper/test.sh
 docker compose build repo-builder
 docker compose run --rm repo-web nginx -t
 docker compose run --rm repo-builder --dry-run
@@ -105,29 +105,52 @@ contents permission. On `ubuntu-latest` it checks out the repository, installs P
 installs builder requirements plus pytest and Ruff, then runs:
 
 ```bash
+python -m compileall -q builder scripts tests
 ruff check .
 pytest -q
+docker compose config --quiet
+bash -n add-package.sh builder/entrypoint.sh helper/build.sh helper/cleanup.sh helper/dry-run.sh helper/logs.sh helper/run.sh helper/status.sh helper/test.sh
 ```
 
-The CI workflow does not currently run `compileall`, Docker builds, Compose validation,
-nginx checks, live dry runs, or Windows acceptance. Run the applicable local checks before
-requesting review.
+Before the Python checks, pinact verifies that workflow actions use real immutable commits and
+that their readable release comments match those commits.
 
-### Spelling, size, dependencies, and CVE workflow
+CI does not build Docker images, test nginx, contact live upstream services, or perform
+Windows acceptance. Run the applicable local checks before requesting review.
+
+### Security, dependency, and maintenance workflows
 
 - `.github/workflows/spelling.yml` runs `crate-ci/typos` on pull requests.
 - `.github/workflows/size.yml` labels pull requests from `size/xs` through `size/xl`. More
   than 1000 changed lines produces a warning message, but `fail_if_xl` is false.
-- `.github/dependabot.yml` checks root and builder Python dependencies, GitHub Actions, and
-  the builder Docker ecosystem daily at 04:00. It opens dependency pull requests within the
-  configured limits.
+- `.github/workflows/devskim.yml` and `.github/workflows/defender-for-devops.yml` run static
+  analysis and upload their findings to GitHub code scanning. GitHub CodeQL Default Setup
+  separately scans Actions and Python with the extended query suite; no duplicate advanced
+  CodeQL workflow is stored in this repository.
+- `.github/workflows/dependency-review.yml` checks dependency changes in pull requests to
+  `main` and fails on high or critical known vulnerabilities.
+- `.github/workflows/scorecard.yml` runs OpenSSF Scorecard only on trusted pushes to `main`,
+  its weekly schedule, or manual dispatch, then uploads the SARIF result to code scanning.
+- `.github/dependabot.yml` checks builder pip dependencies, root GitHub Actions, and the
+  builder Docker ecosystem daily at 04:00. Minor and patch updates are grouped per ecosystem;
+  major updates remain separate pull requests. Dependabot does not auto-merge them.
 - `.github/workflows/cve-lite-fix.yml` runs daily at 06:00 and by manual dispatch. It checks
   out the default branch and runs OWASP CVE Lite with fixes and pull-request creation
-  enabled. It has `contents: write` and `pull-requests: write` permissions.
+  enabled. This privileged workflow has `contents: write` and `pull-requests: write`; its
+  proposed changes must be reviewed.
 
-These jobs propose or check changes. Their existence does not establish that a specific
-dependency update, image, or Windows package is safe. Review their output and run the normal
+Workflow action references use immutable commit SHA pins with readable release comments.
+These jobs report or propose changes, but their presence and findings do not establish that a
+dependency update, image, or Windows package is safe. Review the output and run the normal
 checks.
+
+### Community and intake
+
+`.github/ISSUE_TEMPLATE/` provides structured bug and feature forms, disables blank issues,
+and links to private security reporting, documentation, and support guidance. The pull request
+template asks contributors for scope and validation details. `CONTRIBUTING.md`, `SECURITY.md`,
+`SUPPORT.md`, and `CODE_OF_CONDUCT.md` set the contribution, disclosure, support, and conduct
+expectations. `CODEOWNERS` defines the default review ownership for repository changes.
 
 ## GHCR image automation
 
@@ -140,19 +163,16 @@ The image name is `ghcr.io/${{ github.repository }}`. Docker metadata creates ta
 branch or pull request, a short SHA tag, and a raw tag equal to the full commit SHA. The
 image gets a `version` label containing the pull-request number when available.
 
-Push behavior is exactly conditional:
+Pull requests build the image without logging in or pushing, regardless of whether the source
+branch is in this repository or a fork. That job has only `contents: read`. Pushes to `main`
+run the publish job, which logs in to GHCR, pushes the image, and generates a provenance
+attestation from the pushed image digest. Its permissions are `contents: read` plus
+`packages: write`, `id-token: write`, and `attestations: write`.
 
-- A push event on `main` logs in with the workflow `GITHUB_TOKEN` and pushes.
-- A pull request from a branch in the same repository logs in and pushes its generated tags.
-- A pull request from a fork builds but does not log in or push.
-
-The job has `contents: read` and `packages: write`. It builds only the repo-builder image,
-not the `repo-web` nginx image or an OPSI package catalog release.
-
-There is no semantic release process configured. No workflow calculates a semantic version,
-creates a GitHub Release, publishes release notes, or maps package revisions to application
-releases. The GHCR workflow also does not explicitly create a `latest` tag or a versioned
-release channel. Treat its branch, pull-request, and commit tags as CI image artifacts.
+The workflow builds only the repo-builder image, not the `repo-web` nginx image or an OPSI
+package catalog release. It does not explicitly create a `latest` tag or a versioned release
+channel. `.github/release.yml` configures categories for GitHub's generated release notes,
+but no workflow publishes GitHub Releases or release notes.
 
 ## Change completion
 
