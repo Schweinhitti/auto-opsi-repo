@@ -1,0 +1,9 @@
+docs/TREE.txt
+  ai_agent 3-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "8c59c2532dbce2e92c1ee2ac6d9b217b7cc6c295",
+  "prompts": {}
+}
