@@ -5,6 +5,7 @@ GITHUB = ROOT / ".github"
 
 
 def test_required_community_files_exist():
+    """Require the standard community health files under ``.github``."""
     required = [
         "CONTRIBUTING.md",
         "CODE_OF_CONDUCT.md",

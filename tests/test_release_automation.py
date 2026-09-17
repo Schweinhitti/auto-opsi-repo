@@ -7,6 +7,7 @@ GITHUB = ROOT / ".github"
 
 
 def test_release_config_has_parseable_categories_and_exclusions():
+    """Require valid release-note categories, labels, and exclusions."""
     path = GITHUB / "release.yml"
     assert path.is_file(), "required release.yml must exist"
     config = yaml.safe_load(path.read_text())

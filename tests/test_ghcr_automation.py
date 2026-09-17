@@ -7,10 +7,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def _workflow():
+    """Load the GHCR publication workflow."""
     return yaml.safe_load((ROOT / ".github/workflows/ghcr-publish.yml").read_text())
 
 
 def test_ghcr_pull_request_job_is_build_only():
+    """Keep pull-request image builds read-only and unpublished."""
     pull_request_build = _workflow()["jobs"]["build-pr"]
     assert pull_request_build["if"] == "github.event_name == 'pull_request'"
     assert pull_request_build["permissions"] == {"contents": "read"}
@@ -22,6 +24,7 @@ def test_ghcr_pull_request_job_is_build_only():
 
 
 def test_ghcr_publish_job_has_provenance_permissions():
+    """Grant the publisher only the permissions needed for provenance and packages."""
     publisher = _workflow()["jobs"]["publish"]
     assert publisher["if"] == "github.event_name == 'push'"
     assert publisher["permissions"] == {
@@ -33,6 +36,7 @@ def test_ghcr_publish_job_has_provenance_permissions():
 
 
 def test_ghcr_publish_attests_the_pushed_image_digest():
+    """Attest the digest produced by the image publication step."""
     steps = _workflow()["jobs"]["publish"]["steps"]
     assert any("docker/login-action@" in step.get("uses", "") for step in steps)
 
@@ -52,6 +56,7 @@ def test_ghcr_publish_attests_the_pushed_image_digest():
 
 
 def test_defender_workflow_has_permissions_for_sarif_upload():
+    """Allow the Defender workflow to upload its SARIF results."""
     workflow = yaml.safe_load((ROOT / ".github/workflows/defender-for-devops.yml").read_text())
     msdo_job = workflow["jobs"]["MSDO"]
     assert msdo_job["permissions"] == {
