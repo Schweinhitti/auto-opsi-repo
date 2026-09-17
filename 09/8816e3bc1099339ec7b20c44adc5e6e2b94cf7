@@ -1,0 +1,31 @@
+.github/SUPPORT.md
+  ai_agent 1-13
+tests/test_community_files.py
+  s_2d57cdca1db699::t_8061adb0b6497f 1-17
+.github/CODEOWNERS
+  ai_agent 1-12
+.github/CONTRIBUTING.md
+  ai_agent 1-72
+.github/pull_request_template.md
+  ai_agent 1-30
+.github/CODE_OF_CONDUCT.md
+  ai_agent 1-111
+.github/SECURITY.md
+  ai_agent 1-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "098816e3bc1099339ec7b20c44adc5e6e2b94cf7",
+  "prompts": {},
+  "sessions": {
+    "s_2d57cdca1db699": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f5c5c0e3affeuH83kYvAL8u3Mb",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Tom <github@tsmdt.org>"
+    }
+  }
+}
