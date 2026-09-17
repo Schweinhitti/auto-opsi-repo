@@ -1,0 +1,12 @@
+* @Schweinhitti
+
+/.github/ @Schweinhitti
+/.github/workflows/ @Schweinhitti
+/builder/ @Schweinhitti
+/builder/Dockerfile @Schweinhitti
+/catalog/ @Schweinhitti
+/docker-compose.yml @Schweinhitti
+/helper/ @Schweinhitti
+/nginx/ @Schweinhitti
+/scripts/ @Schweinhitti
+/systemd/ @Schweinhitti
