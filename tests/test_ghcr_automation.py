@@ -11,6 +11,19 @@ def _workflow():
     return yaml.safe_load((ROOT / ".github/workflows/ghcr-publish.yml").read_text())
 
 
+def _triggers(workflow):
+    """Return workflow triggers across YAML 1.1 and 1.2 parsers."""
+    return workflow.get("on", workflow.get(True, {}))
+
+
+def test_ghcr_workflow_only_handles_main_branch_changes():
+    """Build pull requests and publish pushes only when they target main."""
+    triggers = _triggers(_workflow())
+    assert set(triggers) == {"pull_request", "push"}
+    assert triggers["pull_request"] == {"branches": ["main"]}
+    assert triggers["push"] == {"branches": ["main"]}
+
+
 def test_ghcr_pull_request_job_is_build_only():
     """Keep pull-request image builds read-only and unpublished."""
     pull_request_build = _workflow()["jobs"]["build-pr"]
@@ -21,6 +34,7 @@ def test_ghcr_pull_request_job_is_build_only():
     assert not any("docker/login-action@" in step.get("uses", "") for step in steps)
     image_build = next(step for step in steps if step.get("name") == "Build Docker image")
     assert image_build["with"]["push"] is False
+    assert "secrets." not in yaml.safe_dump(pull_request_build)
 
 
 def test_ghcr_publish_job_has_provenance_permissions():
@@ -53,6 +67,8 @@ def test_ghcr_publish_attests_the_pushed_image_digest():
     assert provenance["with"]["subject-digest"] == (
         f"${{{{ steps.{image_build['id']}.outputs.digest }}}}"
     )
+    assert provenance["with"]["subject-name"] == "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+    assert provenance["with"]["push-to-registry"] is True
 
 
 def test_defender_workflow_has_permissions_for_sarif_upload():

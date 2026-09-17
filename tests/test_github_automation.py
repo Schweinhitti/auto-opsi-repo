@@ -75,6 +75,17 @@ def test_ci_workflow_exists_and_has_core_contract():
     assert setup_python["with"]["cache-dependency-path"] == "builder/requirements.txt"
 
 
+def test_ci_uses_the_supported_python_version():
+    """Keep CI on the Python version documented for local development."""
+    workflow = _load_yaml(WORKFLOWS / "ci.yml")
+    setup_python = next(
+        step
+        for step in workflow["jobs"]["test"]["steps"]
+        if step.get("uses", "").startswith("actions/setup-python@")
+    )
+    assert setup_python["with"]["python-version"] == "3.13"
+
+
 def test_ci_verifies_action_pins_and_version_comments():
     """Configure pinact to check immutable pins and their release comments."""
     workflow = _load_yaml(WORKFLOWS / "ci.yml")
@@ -149,6 +160,15 @@ def _assert_dependabot_groups_minor_and_patch(ecosystem, directory):
         f"Dependabot target {ecosystem}:{directory} must group minor and patch updates"
     )
 
+    matching_groups = [
+        group
+        for group in update["groups"].values()
+        if set(group["update-types"]) == {"minor", "patch"}
+    ]
+    assert all(group["patterns"] == ["*"] for group in matching_groups), (
+        f"Dependabot target {ecosystem}:{directory} must group every dependency"
+    )
+
 
 def test_dependabot_groups_builder_pip_minor_and_patch_updates():
     """Group minor and patch updates for builder Python dependencies."""
@@ -175,6 +195,26 @@ def test_dependabot_uses_existing_repository_labels():
     assert configured_labels <= allowed_labels, (
         "Dependabot labels must exist in the repository; ecosystem-specific labels are not configured"
     )
+
+
+def test_dependabot_update_policies_are_consistent():
+    """Apply the intended schedule, ownership, limits, labels, and commit prefixes."""
+    config = _load_yaml(ROOT / ".github/dependabot.yml")
+    expected = {
+        ("pip", "/builder"): (10, "deps(builder)", ["dependencies"]),
+        ("github-actions", "/"): (10, "deps(actions)", ["dependencies", "github_actions"]),
+        ("docker", "/builder"): (5, "deps(builder)", ["dependencies"]),
+    }
+
+    for update in config["updates"]:
+        key = (update["package-ecosystem"], update["directory"])
+        limit, prefix, labels = expected[key]
+        assert update["schedule"] == {"interval": "daily", "time": "04:00"}
+        assert update["open-pull-requests-limit"] == limit
+        assert update["allow"] == [{"dependency-type": "all"}]
+        assert update["commit-message"] == {"prefix": prefix}
+        assert update["labels"] == labels
+        assert update["reviewers"] == ["schweinhitti"]
 
 
 def test_workflow_actions_are_pinned_to_full_commit_sha():

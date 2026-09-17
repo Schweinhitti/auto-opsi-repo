@@ -35,3 +35,17 @@ def test_release_config_has_parseable_categories_and_exclusions():
         "enhancement",
         "github_actions",
     }, "release-note categories must use labels configured in the repository"
+
+
+def test_release_config_uses_a_single_final_catch_all_category():
+    """Keep unmatched changes visible without shadowing specific categories."""
+    config = yaml.safe_load((GITHUB / "release.yml").read_text())
+    categories = config["changelog"]["categories"]
+    wildcard_categories = [category for category in categories if "*" in category["labels"]]
+    assert wildcard_categories == [categories[-1]]
+    assert categories[-1]["labels"] == ["*"]
+
+    specific_labels = [label for category in categories[:-1] for label in category["labels"]]
+    assert len(specific_labels) == len(set(specific_labels)), (
+        "specific release-note labels must not appear in multiple categories"
+    )
