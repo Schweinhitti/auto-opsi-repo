@@ -1,0 +1,13 @@
+.github/workflows/dependency-review.yml
+  ai_agent 1-26
+.github/workflows/scorecard.yml
+  ai_agent 1-41
+tests/test_security_workflows.py
+  ai_agent 1-52
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "c54d9b9ba8b01f29747cb38dab0761f2bd725b03",
+  "prompts": {}
+}
