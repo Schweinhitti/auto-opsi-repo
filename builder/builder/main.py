@@ -11,6 +11,7 @@ from pathlib import Path
 
 from .catalog import load_catalog
 from .download import HTTP, UpstreamRateLimitError, download, protect_checksum
+from .health import health_defaults, update_status
 from .opsi import build, generate
 from .repository import inventory, publish, retain
 from .sources import resolve
@@ -216,6 +217,13 @@ def main():
     interval = int(os.getenv("UPDATE_INTERVAL_SECONDS", "21600"))
     if interval < 60:
         parser.error("UPDATE_INTERVAL_SECONDS must be >=60")
+    health_defaults(interval)
+    if not args.dry_run:
+        update_status(
+            root,
+            state="starting",
+            update_interval_seconds=interval,
+        )
     # Dry runs do not create or write lock/state files. Writers serialize using flock.
     while not stop.is_set():
         try:
@@ -238,9 +246,29 @@ def main():
                             or (path.name.startswith("ziplaunch.") and ".opsi-cli." in path.name)
                         ):
                             shutil.rmtree(path)
+                    update_status(root, state="running", last_cycle_started_at=now())
                     failed = run(args)
+                    summary = {"Failed": [], "Warnings": []}
+                    status_summary = root / "state/last-run.json"
+                    if status_summary.exists():
+                        summary = json.loads(status_summary.read_text()).get("summary", summary)
+                    update_status(
+                        root,
+                        state="idle",
+                        last_cycle_result="failed" if failed else "success",
+                        last_cycle_finished_at=now(),
+                        failed_items=len(summary["Failed"]),
+                        warning_items=len(summary["Warnings"]),
+                    )
         except Exception:
             LOG.exception("Builder cycle failed")
+            if not args.dry_run:
+                update_status(
+                    root,
+                    state="idle",
+                    last_cycle_result="failed",
+                    last_cycle_finished_at=now(),
+                )
             failed = True
         if args.once or args.dry_run:
             return int(failed)
