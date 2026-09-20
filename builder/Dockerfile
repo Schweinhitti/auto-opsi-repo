@@ -1,4 +1,5 @@
-FROM uibmz/opsi-server:4.3
+ARG OPSI_BASE_IMAGE=uibmz/opsi-server:4.3
+FROM ${OPSI_BASE_IMAGE}
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends python3-venv osslsigncode ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
