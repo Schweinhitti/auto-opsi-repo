@@ -27,7 +27,7 @@ These are the exact `.env.example` defaults:
 | `BUILDER_GID` | `1000` | Numeric GID used by `repo-builder`. It must match the writable directory ownership or permissions. |
 | `HTTP_BIND_ADDRESS` | `0.0.0.0` | Host address for the nginx published port. The default exposes the port on every host interface. |
 | `HTTP_PORT` | `8088` | Host port mapped to nginx port 80. Select an unused port permitted by the host firewall. |
-| `OPSI_BASE_IMAGE` | `uibmz/opsi-server:4.3` | Compose declares this builder argument, but the current `builder/Dockerfile` doesn't consume it and directly uses the same image reference. Changing this variable alone doesn't change the image. |
+| `OPSI_BASE_IMAGE` | `uibmz/opsi-server:4.3` | Builder base image reference consumed by `builder/Dockerfile`. Set this to a reviewed tag or digest to override the `FROM` source without editing files. |
 | `LOG_LEVEL` | `INFO` | Python builder logging level passed to `logging.basicConfig`. Use a level recognized by Python logging, such as `DEBUG`, `INFO`, `WARNING`, `ERROR`, or `CRITICAL`. |
 
 Compose also sets internal paths that aren't operator settings:
@@ -78,10 +78,9 @@ docker compose build --pull repo-builder
 docker compose up -d repo-builder
 ```
 
-`OPSI_BASE_IMAGE` is not currently an effective override because the Dockerfile
-doesn't declare or use the Compose build argument. To change the base image,
-review and edit `builder/Dockerfile`, then rebuild. Don't assume that changing
-only `.env` selected a different OPSI tooling image.
+`OPSI_BASE_IMAGE` is passed as a Compose build argument and used directly in the
+Dockerfile `FROM` instruction. To change the base image, set a reviewed image
+reference or digest in `.env`, rebuild `repo-builder`, and recreate the service.
 
 The catalog is bind-mounted read-only and loaded at the start of each builder
 cycle, so a catalog edit doesn't require an image rebuild. It is seen by the
