@@ -268,6 +268,8 @@ def main():
                     state="idle",
                     last_cycle_result="failed",
                     last_cycle_finished_at=now(),
+                    failed_items=1,
+                    warning_items=0,
                 )
             failed = True
         if args.once or args.dry_run:
