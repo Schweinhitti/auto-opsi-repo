@@ -16,6 +16,17 @@ for svc in repo-builder repo-web; do
 done
 
 echo ""
+echo "=== Builder cycle health contract ==="
+if [ -f "state/builder-status.json" ]; then
+    PYTHONPATH=builder python3 -m builder.health --root "$ROOT_DIR" --json 2>/dev/null || \
+        echo "  Could not evaluate builder-status.json"
+    echo "  States: starting=initial grace, running=active cycle, success=last cycle ok, failed=cycle completed with errors, stale=no fresh progress."
+    echo "  Recovery: inspect logs (./helper/logs.sh), run a manual cycle (./helper/build.sh), then restart builder if stale."
+else
+    echo "  No builder status file yet (waiting for first repo-builder startup)"
+fi
+
+echo ""
 echo "=== Last build summary ==="
 if [ -f "state/last-run.json" ]; then
     python3 -c "
