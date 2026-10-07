@@ -13,6 +13,8 @@ services:
     security_opt: [no-new-privileges:true]
     environment:
       UPDATE_INTERVAL_SECONDS: ${UPDATE_INTERVAL_SECONDS:-21600}
+      BUILDER_FRESHNESS_SECONDS: ${BUILDER_FRESHNESS_SECONDS:-}
+      BUILDER_STARTUP_GRACE_SECONDS: ${BUILDER_STARTUP_GRACE_SECONDS:-900}
       KEEP_VERSIONS: ${KEEP_VERSIONS:-2}
       MAX_DOWNLOAD_BYTES: ${MAX_DOWNLOAD_BYTES:-2147483648}
       ALLOW_CHANGED_CHECKSUM: ${ALLOW_CHANGED_CHECKSUM:-false}
@@ -30,6 +32,11 @@ services:
     logging:
       driver: json-file
       options: {max-size: 10m, max-file: '3'}
+    healthcheck:
+      test: [CMD, python, -m, builder.health, --check]
+      interval: 60s
+      timeout: 5s
+      retries: 3
   repo-web:
     image: nginx:stable-alpine
     restart: unless-stopped

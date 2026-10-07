@@ -11,7 +11,7 @@ This repository is available under the MIT License so anyone can use, modify, an
 
 ## Architecture
 
-- **repo-builder**: Python, official OPSI 4.3 package CLI, immediate startup run followed by a configurable six-hour interval. One product failing does not stop other products. Persistent state and historical installer checksums live in `state/packages.json`.
+- **repo-builder**: Python, official OPSI 4.3 package CLI, immediate startup run followed by a configurable six-hour interval. One product failing does not stop other products. Persistent state and historical installer checksums live in `state/packages.json`. Cycle health is persisted in `state/builder-status.json` and exposed as a Docker healthcheck.
 - **repo-web**: nginx, read-only repository mount, directory listing, GET/HEAD only, HTTP healthcheck, configurable host port. No Docker socket or builder work/state directories are exposed.
 - **Catalog**: `catalog/packages.yaml` contains all product definitions, source settings, installer/uninstaller arguments, detection and redistribution classifications. No application catalog is embedded in Python.
 - **Publication**: installers download to private `work/`, pass format and checksum checks, enter `CLIENT_DATA`, and are packaged using `OPSI/control.toml`. OPSI extracts each archive again before publication. Complete files are atomically renamed into the repository; metadata is generated outside the served directory, then atomically replaced. Failed metadata generation prevents retention deletion.
@@ -58,6 +58,8 @@ On a prepared workspace some packages may already exist from validation; they wi
 | Variable | Default | Meaning |
 |---|---|---|
 | `UPDATE_INTERVAL_SECONDS` | `21600` | Delay after a cycle completes; minimum 60 seconds |
+| `BUILDER_FRESHNESS_SECONDS` | auto (`max(2×interval, 3600)`) | Maximum allowed age for cycle progress before reporting stale builder health |
+| `BUILDER_STARTUP_GRACE_SECONDS` | `900` | Grace period before first completed cycle is treated as stale |
 | `KEEP_VERSIONS` | `2` | Number of complete product-version/revision archives to retain, at least 1 |
 | `GITHUB_TOKEN` | empty | Optional read-only GitHub token; improves unauthenticated API limits |
 | `ALLOW_CHANGED_CHECKSUM` | `false` | Explicitly permit a changed installer hash for a known version |
@@ -134,7 +136,7 @@ docker compose run --rm repo-builder --once
 docker compose up -d repo-builder
 ```
 
-Each cycle prints Updated, Unchanged, Failed, Warnings and Disabled lists. `state/last-run.json` records the latest non-dry-run summary. Monitor its timestamp as well as the nginx healthcheck: nginx can remain healthy while upstream builds fail. Docker logs rotate at 10 MB, three files per service.
+Each cycle prints Updated, Unchanged, Failed, Warnings and Disabled lists. `state/last-run.json` records the latest non-dry-run summary, and `state/builder-status.json` records the builder cycle state with freshness evaluation: `starting` (startup grace / no completed cycle yet), `running` (cycle in progress), `success` (last cycle succeeded), `failed` (last cycle completed with product or metadata failures), and `stale` (no fresh progress within threshold). The `repo-builder` container healthcheck reports stale states as unhealthy. Use `./helper/status.sh` for a combined view and recovery hint (logs, manual run, restart if stale). Docker logs rotate at 10 MB, three files per service.
 
 ## Adding a package
 
