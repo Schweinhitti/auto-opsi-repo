@@ -6,6 +6,8 @@ Wants=network-online.target
 
 [Service]
 Type=oneshot
-WorkingDirectory=/opt/opsi/opsi-docker/opsi-server
-ExecStart=/usr/bin/docker compose exec -T opsi-server opsi-package-updater -v --repo local_auto install
+EnvironmentFile=-/etc/default/opsi-local-auto-update
+Environment=OPSI_COMPOSE_DIR=/opt/opsi/opsi-docker/opsi-server
+Environment=OPSI_COMPOSE_SERVICE=opsi-server
+ExecStart=/usr/bin/bash -eu -c 'if [ ! -d "$OPSI_COMPOSE_DIR" ]; then echo "opsi-local-auto-update: OPSI_COMPOSE_DIR does not exist: $OPSI_COMPOSE_DIR" >&2; exit 1; fi; cd "$OPSI_COMPOSE_DIR"; if ! docker compose config --services | grep -Fxq "$OPSI_COMPOSE_SERVICE"; then echo "opsi-local-auto-update: OPSI_COMPOSE_SERVICE not found in compose project: $OPSI_COMPOSE_SERVICE" >&2; exit 1; fi; exec docker compose exec -T "$OPSI_COMPOSE_SERVICE" opsi-package-updater -v --repo local_auto install'
 TimeoutStartSec=2h
