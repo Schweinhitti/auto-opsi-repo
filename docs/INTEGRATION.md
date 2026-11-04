@@ -58,17 +58,18 @@ docker compose exec opsi-server \
 
 Repository builds and depot imports are separate operations. The builder checks upstream every six hours. It does not ask OPSI to import anything, and it does not schedule software deployment to clients. Keep `autoSetup = false`: setting it to `true` can schedule updated applications on clients and must remain an explicit administrator choice. Vendor self-updaters may also independently update installed applications; these recipes do not globally disable them.
 
-Install the optional depot-import timer only after validating the repository. The tracked
-service file contains the validated host's
-`WorkingDirectory=/opt/opsi/opsi-docker/opsi-server`; if the existing OPSI Compose project
-is elsewhere, copy the service and change `WorkingDirectory` before enabling it:
+Install the optional depot-import timer only after validating the repository. Configure the
+existing OPSI Compose location in one place via
+`/etc/default/opsi-local-auto-update`:
 
 ```bash
 cd /path/to/opsi-auto-repo
 sudo install -m 0644 systemd/opsi-local-auto-update.service /etc/systemd/system/
 sudo install -m 0644 systemd/opsi-local-auto-update.timer /etc/systemd/system/
-sudoedit /etc/systemd/system/opsi-local-auto-update.service
+sudo install -m 0644 systemd/opsi-local-auto-update.env /etc/default/opsi-local-auto-update
+sudoedit /etc/default/opsi-local-auto-update
 sudo systemctl daemon-reload
+sudo systemd-analyze verify /etc/systemd/system/opsi-local-auto-update.service
 sudo systemctl enable --now opsi-local-auto-update.timer
 systemctl list-timers opsi-local-auto-update.timer
 ```
@@ -80,10 +81,20 @@ sudo systemctl start opsi-local-auto-update.service
 journalctl -u opsi-local-auto-update.service
 ```
 
-The service uses `docker compose exec -T` because systemd has no terminal. Installing and
-enabling it is a separate administrator action; the repository stack does not do so during
-normal setup. Keep the `.repo` file in your existing server's normal configuration
-backup/persistent storage; this project does not change that deployment's volumes.
+The service uses `docker compose exec -T` because systemd has no terminal. It validates
+`OPSI_COMPOSE_DIR` and `OPSI_COMPOSE_SERVICE` before running import; invalid values fail
+the unit with a clear error in `journalctl`. You can validate this failure path with:
+
+```bash
+sudo env OPSI_COMPOSE_SERVICE=does-not-exist \
+  systemctl start opsi-local-auto-update.service
+journalctl -u opsi-local-auto-update.service -n 20 --no-pager
+```
+
+Installing and enabling it is a separate administrator action; the repository stack does
+not do so during normal setup. Keep the `.repo` file in your existing server's normal
+configuration backup/persistent storage; this project does not change that deployment's
+volumes.
 
 ## Deployment record: 2026-09-07
 
