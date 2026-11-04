@@ -219,8 +219,8 @@ restart. Do not regenerate or edit hashes to match unexplained bytes.
 policy denies access. The container root filesystem itself is read-only.
 
 **Diagnosis:** Compare `.env` UID and GID values with host ownership and modes for
-all three directories. Inspect host policy logs where applicable. Do not rely on
-`helper/run.sh`, because its `chown` failure is ignored.
+all three directories. Inspect host policy logs where applicable. `helper/run.sh`
+uses effective Compose values and exits with an error if host `chown` fails.
 
 **Safe action:** Stop the builder, correct owner and least-privilege modes on the
 three writable bind mounts, then run a product dry run and controlled normal cycle.

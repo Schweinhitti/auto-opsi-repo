@@ -161,10 +161,9 @@ convenience shortcut, not the preferred first-install procedure above.
 
 Be aware of these source-level behaviors:
 
-* The script doesn't source `.env` into its own shell. Its `chown` and displayed
-  port use exported shell variables or their `1000:1000` and `8088` fallbacks,
-  which can differ from values Compose reads from `.env`.
-* Its ownership adjustment suppresses `chown` errors. Check ownership yourself.
+* It uses effective values from `docker compose config` for ownership and the
+  displayed repository endpoint.
+* It fails if ownership cannot be applied to `repository/`, `state/`, or `work/`.
 * It runs `docker compose up -d` without `--build`, so it doesn't force a rebuild
   after source changes.
 * Its nginx wait pipeline appends the container ID as another `wget` argument.

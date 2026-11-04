@@ -40,9 +40,9 @@ docker compose config --quiet
 docker compose up -d --build
 ```
 
-`./helper/run.sh` wraps directory creation and `docker compose up -d`, but inspect
-`.env` and directory ownership yourself. Its attempted `chown` is allowed to fail,
-so a successful helper exit does not prove the builder can write its mounts.
+`./helper/run.sh` wraps directory creation and `docker compose up -d`. It resolves
+ownership and endpoint values from effective `docker compose config` and exits
+with an error if mount ownership cannot be applied.
 
 The first builder cycle starts immediately. Confirm both service and build state:
 
